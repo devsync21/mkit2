@@ -10,8 +10,8 @@ import {
 
 import MainScreen from './src/screens/MainScreen';
 
-import axios from 'axios'
-const baseUrl = 'http://localhost:8000';
+// import axios from 'axios'
+// const baseUrl = 'http://localhost:8000';
 
 
 

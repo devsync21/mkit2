@@ -63,7 +63,7 @@ const Replies =  ({route}) => {
       const datetime = item.item.time.split(' ')
       const time =  datetime[2].slice(0,4)
       const newdatetime = datetime[0]+' '+ time + datetime[1]
-      console.log (newdatetime)
+      // console.log (newdatetime)
 
 
 

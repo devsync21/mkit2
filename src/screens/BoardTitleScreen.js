@@ -29,7 +29,7 @@ const [isLoading, SetIsLoading] = useState(true)
 // section에 대한 정보들 얻어오기
 let sectioninfo = SectionInfo[route.params.category-1]
 
-const baseUrl = 'http://localhost:8000';
+const baseUrl = 'http://localhost:3000';
 
 // flatList 아래쪽에 메뉴 공간 만들기
 const flatlistHeight = useWindowDimensions().height - 65

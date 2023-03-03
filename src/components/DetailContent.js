@@ -8,6 +8,7 @@ import IframeRenderer, { iframeModel } from '@native-html/iframe-plugin';
 import { useWindowDimensions } from 'react-native';
 import RenderHtml, { HTMLElementModel, HTMLContentModel }  from 'react-native-render-html';
 
+import GetAuth from './GetAuth';
 
 var iconv = require('iconv-lite');
 const cheerio = require('cheerio')
@@ -16,47 +17,48 @@ const cheerio = require('cheerio')
 /////////////// react-native-render-html 관련된 함수들 시작
 
 const customHTMLElementModels = {
-  iframe: iframeModel,
+	iframe: iframeModel,
 
-  'font': HTMLElementModel.fromCustomModel({
-    tagName: 'font',
-    mixedUAStyles: {
-  
-     
-    },
-    contentModel: HTMLContentModel.block
-  }),
+	'font': HTMLElementModel.fromCustomModel({
+		tagName: 'font',
+		mixedUAStyles: {
+	
+		
+		},
+		contentModel: HTMLContentModel.block
+	}),
 
-  'ytd-expander': HTMLElementModel.fromCustomModel({
-    tagName: 'ytd-expander',
-    mixedUAStyles: {
+	'ytd-expander': HTMLElementModel.fromCustomModel({
+		tagName: 'ytd-expander',
+		mixedUAStyles: {
 
-    },
-    contentModel: HTMLContentModel.block
-  }),
-  'yt-formatted-string': HTMLElementModel.fromCustomModel({
-    tagName: 'yt-formatted-string',
-  
-    contentModel: HTMLContentModel.block
-  })
+		},
+		contentModel: HTMLContentModel.block
+	}),
+
+	'yt-formatted-string': HTMLElementModel.fromCustomModel({
+		tagName: 'yt-formatted-string',
+	
+		contentModel: HTMLContentModel.block
+	})
 };
 
 
 
 
 const renderersProps = {
-  img: {
-    enableExperimentalPercentWidth: true
-  },
+	img: {
+		enableExperimentalPercentWidth: true
+	},
 
-  iframe: {
-    scalesPageToFit: true,
-    
-    webViewProps: {
-      /* Any prop you want to pass to iframe WebViews */
-     
-    }
-  }
+	iframe: {
+		scalesPageToFit: true,
+		
+		webViewProps: {
+		/* Any prop you want to pass to iframe WebViews */
+		
+		}
+	}
 
 };
 
@@ -75,16 +77,16 @@ const processHTML = (data) => {
     //이미지 중에 서버에 있는 이미지는 앞에 https..를 붙여준다
     let  times =1
     imgSrc.each((idx, node) => {
-      const eachImgSrc = $(node).attr('src')
+		const eachImgSrc = $(node).attr('src')
 
-      if (eachImgSrc.substring(1,11) == "fileServer"){
-        const new_ImgSrc = "http://m.missyusa.com"+$(node).attr('src')
-        $(node).attr("src", new_ImgSrc)
-        console.log("changed", $(node).attr('src'))
-      } else {
-      //   console.log(times,"&&&&&&&&&&&&&&&&&&&&",times, $(node))
-        times++
-      }
+		if (eachImgSrc.substring(1,11) == "fileServer"){
+			const new_ImgSrc = "http://m.missyusa.com"+$(node).attr('src')
+			$(node).attr("src", new_ImgSrc)
+			// console.log("changed", $(node).attr('src'))
+		} else {
+		//   console.log(times,"&&&&&&&&&&&&&&&&&&&&",times, $(node))
+			times++
+		}
       
     })
 
@@ -114,43 +116,47 @@ const processHTML = (data) => {
 // 메인 펑션
 const DetailContent = ({route}) => {
 
- 
-  const [detail, setDetail] = useState("")
-   const baseUrl = 'http://localhost:8000';
-  const info = route.params
+	// console.log(route.params.data2.rule)
+	const needAuth = route.params.data2.rule
 
-  const source = {
-    html: detail
-  };
+	const [detail, setDetail] = useState("")
+	const baseUrl = 'http://localhost:3000';
+	const info = route.params
 
-  const { width } = useWindowDimensions();
-  const postdata = {
-   link :info.data1.link
-  }
+	const source = {
+		html: detail
+	};
+
+	const { width } = useWindowDimensions();
+
+	const postdata = {
+		link :info.data1.link
+	}
   
   const getDetailAxios = async () =>{
+	if (!needAuth){
+		console.log ("auth 가 필요합니다. ")
+		const Authinfo =  GetAuth()
+		console.log("auth는 ",Authinfo)
+	}
   
     try {
       
-        let res = await axios.post(baseUrl+'/get_board_detail',
-        postdata
-        
-      )   
+        let res = await axios.post(baseUrl+'/get_board_detail', postdata)   
     
-      //axios 가 갑자기 안되면 adb reverse tcp:8000 tcp:8000
+     //axios 가 갑자기 안되면 adb reverse tcp:3000 tcp:3000
 
-
-  
+        
     // 주로 cheerio 이용해서 html 변환  
-    const finalHTML = processHTML (res.data[0].data)    
+    const finalHTML = processHTML (res.data)    
 
-    console.log(res)
+    // console.log(res)
  
     setDetail(finalHTML)
       
     } catch(e){
      
-      console.log(e)
+   	   console.log(e)
   
     }
 
@@ -158,9 +164,9 @@ const DetailContent = ({route}) => {
 
 
   useEffect(() => {
-    // // Update the document title using the browser API
-    getDetailAxios()
- 
+	// // Update the document title using the browser API
+	getDetailAxios()
+
   },[]);
   
 
@@ -168,23 +174,23 @@ const DetailContent = ({route}) => {
     <>
 
         <ScrollView >
-                <RenderHtml
-                
-                contentWidth={width}
-                source={source}
-                WebView={WebView}
+			<RenderHtml
+			
+				contentWidth={width}
+				source={source}
+				WebView={WebView}
 
-                customHTMLElementModels={customHTMLElementModels}
-                renderersProps={renderersProps}
-                
-                javaScriptEnabled={true}
+				customHTMLElementModels={customHTMLElementModels}
+				renderersProps={renderersProps}
+				
+				javaScriptEnabled={true}
 
-                renderers={renderers}
-               
-                // computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
-                // provideEmbeddedHeaders={provideEmbeddedHeaders}
-                />
-                <Text></Text>
+				renderers={renderers}
+				
+				// computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
+				// provideEmbeddedHeaders={provideEmbeddedHeaders}
+			/>
+			<Text></Text>
     
         </ScrollView> 
 
