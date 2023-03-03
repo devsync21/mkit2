@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { SafeAreaView } from 'react-native';
+// import { SafeAreaView } from 'react-navigation';
+import { Button, View, Text, Image } from 'react-native';
+
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+
+import MainScreen from './src/screens/MainScreen';
+
+import axios from 'axios'
+const baseUrl = 'http://localhost:8000';
+
+
+
 
 export default function App() {
+  // const insets = useSafeAreaInsets();
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+
+     
+
+    <SafeAreaProvider style={{ backgroundColor: '#fff', flex: 1 }}>
+          <MainScreen/>
+    
+    </SafeAreaProvider>      
+    
+    
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
