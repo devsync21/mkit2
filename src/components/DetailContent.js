@@ -132,12 +132,20 @@ const DetailContent = ({route}) => {
 	const postdata = {
 		link :info.data1.link
 	}
-  
+
+
+
   const getDetailAxios = async () =>{
 	if (!needAuth){
 		console.log ("auth 가 필요합니다. ")
-		const Authinfo =  GetAuth()
-		console.log("auth는 ",Authinfo)
+		const Authinfo =  await GetAuth(postdata)
+		console.log("auth는 ", Authinfo)
+		const finalHTML = processHTML (Authinfo)    
+
+    // console.log(res)
+ 
+		setDetail(finalHTML)
+		return
 	}
   
     try {

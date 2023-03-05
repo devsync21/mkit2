@@ -36,6 +36,7 @@ const Drawer = createDrawerNavigator();
 
 const MainScreen = () => {
     const insets = useSafeAreaInsets();
+    
 
 
     return (
@@ -77,7 +78,7 @@ const MainScreen = () => {
              style={{
   
                 paddingTop: insets.bottom,
-                backgroundColor:'skyblue'
+                backgroundColor:'red'
 
               }}
             

@@ -1,34 +1,38 @@
 import axios from "axios";
 
-const baseUrl = 'http://localhost:3000';
 
 
-const GetAuth = async () => {
+const GetAuth = async (postdata) => {
     //  일단은 내 아이디 쓰지만, 나중에 get item으로 가져오기
     console.log("시작")
+    const baseUrl = 'http://localhost:3000';
+
 
     const authdata = {
         userid : "jhkim73",
-        passwd : "think4u"
+        passwd : "think4u",
+        link : postdata.link
     }
 
-    
-    try {
-    console.log("sdfsdfsdfsdf시작")
-        
-        let Authcheck = await axios.post(baseUrl+'/get_auth_info', authdata)   
+    // let Authcheck = await axios.post(baseUrl+'/get_auth_info',authdata )
+    // console.log("결과", Authcheck.data)
 
+    // return Authcheck.data
+    try {
+   
+
+         let Authcheck = await axios.post(baseUrl+'/get_auth_info',authdata )
+    
+
+         return Authcheck.data
 
    
 
-         console.log(Authcheck)
-        
-      
-         return "하이루"
+       
 
     } catch(e){
      
-   	   console.log(e)
+   	   console.log(e.message)
 
        return 'ㄴㄴ'
   

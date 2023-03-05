@@ -8,12 +8,13 @@ import BoardDetailScreen from './BoardDetailScreen';
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
-  headerShown: false
+  // headerShown: false
 }
 
 const BoardScreen = ({route}) => {
 
     // console.log(route)
+    console.log(route.params.titleName)
   return (
 
   <Stack.Navigator screenOptions={screenOptions}>
