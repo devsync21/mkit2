@@ -14,14 +14,50 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 
 
+const settingOnPress = (props) => {
+	console.log(props)
+    // const event = props.navigation.emit({
+	// 	type: 'drawerItemPress',
+	// 	target: route.key,
+	// 	canPreventDefault: true,
+	//   });
+
+	//   if (!event.defaultPrevented) {
+	// 	props.navigation.dispatch({
+	// 	  ...(focused
+	// 		? DrawerActions.closeDrawer()
+	// 		: CommonActions.navigate({ name: route.name, merge: true })),
+	// 	  target: props.state.key,
+	// 	});
+	//   }
+}
+
+const SettingMenu = () => {
+  return (
+    <>
+      
+      <View style = {{ paddingHorizontal:10, paddingVertical: 5,
+        borderWidth:1, borderColor:'transparent', borderTopColor:'black',
+        
+        
+      }}>
+        
+        <Ionicons name="settings" size={24} color="black" onPress={settingOnPress} />
+
+      </View>
+    </>
+  )
+}
 
 
 
 const CustomDrawer = (props) => {
+
   // 메뉴가 접혀있는지 열려있는지
   const [sectionMenu, setSectionMenu] = useState([
       {isOpened: true},
@@ -136,7 +172,9 @@ const CustomDrawer = (props) => {
     //  color: "#609806", 
     Textcolor: 'white',
     backgroundColor :'darkgrey', 
-    height: 40
+    height: 40,
+    
+    
     
 
   }
@@ -163,8 +201,8 @@ const CustomDrawer = (props) => {
     <View    style={{
         flex: 1,
   
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
+        // paddingTop: insets.top,
+        // paddingBottom: insets.bottom,
       
       }}>
 
@@ -244,7 +282,7 @@ const CustomDrawer = (props) => {
             />
       </DrawerContentScrollView>
       <View>
-          <Text>Our Custom Text</Text>
+          <SettingMenu/>
       </View>
     </View>
   )
@@ -254,7 +292,7 @@ const CustomDrawer = (props) => {
 const styles = StyleSheet.create({
   DrawerItemListCustomContainer : {
     paddingHorizontal : 15,
-    paddingVertical : 10,
+    // paddingVertical : 10,
 
   },
   sectionMenu : {

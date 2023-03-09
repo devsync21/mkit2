@@ -10,6 +10,8 @@ import {
 
 import MainScreen from './src/screens/MainScreen';
 
+// import AuthContext from './src/store/AuthContext';
+
 // import axios from 'axios'
 // const baseUrl = 'http://localhost:8000';
 
@@ -26,8 +28,9 @@ export default function App() {
      
 
     <SafeAreaProvider style={{ backgroundColor: '#fff', flex: 1 }}>
+		
           <MainScreen/>
-    
+		
     </SafeAreaProvider>      
     
     

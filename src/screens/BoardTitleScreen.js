@@ -83,6 +83,42 @@ useEffect(() => {
     setcurrentPage(1)
 },[route])
 
+// const routeName = navigation.getState().routes[0].name
+// useEffect(()=> {
+// 	console.log('changed drawer options')
+// }, [navigation.canGoBack()])
+// console.log("haha11", navigation)
+
+
+//만일 디테일 정보볼때 제스쳐하면 제목 목록으로, 제목볼때는 drawer menu
+const toggleGesture = () => {
+	// console.log("changed", navigation.canGoBack())
+	const current = navigation.getState().index
+	const parent = navigation.getParent()
+	// console.log("after changed ", navigation.getParent())
+	if (current != 0) {
+		parent.setOptions({ swipeEnabled: false })
+	} else {
+		parent.setOptions({ swipeEnabled: true })
+
+	}
+	// console.log("after changed 1", navigation.getState().index)
+	// console.log("after changed 2", navigation.getState())
+	// console.log("after changed 3", navigation.canGoBack())
+
+
+
+}
+	//만일 디테일 정보볼때 제스쳐하면 제목 목록으로, 제목볼때는 drawer menu
+	useEffect(() => {
+	const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+		// console.log("changed",e)
+		toggleGesture()
+	  // Do something
+	});
+  
+	return unsubscribe;
+  }, [navigation]);
 
 
 // 받아온 데이터 가공
@@ -129,9 +165,6 @@ const onEndReached = () => {
  
   }
 
-  // const onRefresh = () => {
-  //   alert.alert('hi')
-  // }
 
   // flatList 렌더링 하는 함수
   const renderItem = ({item}) => {
@@ -173,9 +206,6 @@ const onEndReached = () => {
                           
                             {item.title}
 
-                            
-                                  
-                              
                           </Text>
                     </View>
                      { item.repl ? 
@@ -240,6 +270,7 @@ const goBack = () => {
 
       </View> :
 
+      // axios에서 제목 목록 불러올때까지 로딩중 표시
       <View style = {{
         height: flatlistHeight, 
         flexDirection: 'row',

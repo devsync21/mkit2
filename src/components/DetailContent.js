@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState, useContext } from 'react'
 import { StyleSheet, Text, View, Button, FlatList,SafeAreaView, TouchableOpacity,ScrollView  } from 'react-native';
 import { WebView } from 'react-native-webview';
 import axios from "axios";
@@ -9,10 +9,13 @@ import { useWindowDimensions } from 'react-native';
 import RenderHtml, { HTMLElementModel, HTMLContentModel }  from 'react-native-render-html';
 
 import GetAuth from './GetAuth';
+import AuthContext from '../store/AuthContext';
+// import {AuthContext} from '../store/AuthContext';
 
 var iconv = require('iconv-lite');
 const cheerio = require('cheerio')
 
+// const AuthCon = useContext(AuthContextStore);
 
 /////////////// react-native-render-html 관련된 함수들 시작
 
@@ -114,12 +117,18 @@ const processHTML = (data) => {
 
 
 // 메인 펑션
-const DetailContent = ({route}) => {
+const DetailContent = ({route, noData,setNoData}) => {
 
 	// console.log(route.params.data2.rule)
 	const needAuth = route.params.data2.rule
 
+	const {cookie, setCookie} = useContext(AuthContext)
+
+
 	const [detail, setDetail] = useState("")
+
+	// const [noData, setNoData] = useState(false)
+
 	const baseUrl = 'http://localhost:3000';
 	const info = route.params
 
@@ -133,74 +142,117 @@ const DetailContent = ({route}) => {
 		link :info.data1.link
 	}
 
+	const fontSize = 15 // 나중에 세팅에서 바꿀수 있게
 
+	const chechAuth = async () => {
+		// 쿠키 정보 가져오기
+		
+		// console.log("쿠키는", cookie)
+		await setCookie(prevState => ({...prevState, passwd: "lll" }))
+		// console.log("쿠키는22", cookie)  
+	}
 
   const getDetailAxios = async () =>{
+
 	if (!needAuth){
-		console.log ("auth 가 필요합니다. ")
-		const Authinfo =  await GetAuth(postdata)
-		console.log("auth는 ", Authinfo)
-		const finalHTML = processHTML (Authinfo)    
+		// console.log ("auth 가 필요합니다. ")
+		const Authinfo =  await GetAuth()
+		// console.log("get auth는 ", Authinfo)
+		const postdata3 = {
+			link : info.data1.link,
+			auth : Authinfo
+		}
 
-    // console.log(res)
- 
+        let res = await axios.post(baseUrl+'/test3', postdata3)   
+
+		if (res.data.length > 0){
+			const finalHTML = processHTML (res.data)    
+
+			setDetail(finalHTML)
+			return
+		} else {
+			// console.log("set no data")
+			setNoData(true)
+			return
+		}
+
+		
+
+	} 
+
+	try {
+	
+		let res = await axios.post(baseUrl+'/get_board_detail', postdata)   
+	
+			//axios 가 갑자기 안되면 adb reverse tcp:3000 tcp:3000
+
+		
+		// 주로 cheerio 이용해서 html 변환  
+		const finalHTML = processHTML (res.data)    
+
+		// console.log(res)
+	
 		setDetail(finalHTML)
-		return
+		
+	} catch(e){
+		
+			console.log(e)
+	
 	}
+	
   
-    try {
-      
-        let res = await axios.post(baseUrl+'/get_board_detail', postdata)   
-    
-     //axios 가 갑자기 안되면 adb reverse tcp:3000 tcp:3000
-
-        
-    // 주로 cheerio 이용해서 html 변환  
-    const finalHTML = processHTML (res.data)    
-
-    // console.log(res)
- 
-    setDetail(finalHTML)
-      
-    } catch(e){
-     
-   	   console.log(e)
-  
-    }
+   
 
   }
 
 
   useEffect(() => {
 	// // Update the document title using the browser API
+	chechAuth()
 	getDetailAxios()
-
+	
   },[]);
+  
+
+  const tagsStyles = {
+	div: {
+	  whiteSpace: 'normal',
+	  lineHeight: 20,
+	  fontSize: fontSize
+	 
+	},
+	
+  };
   
 
   return (
     <>
-
-        <ScrollView >
-			<RenderHtml
-			
-				contentWidth={width}
-				source={source}
-				WebView={WebView}
-
-				customHTMLElementModels={customHTMLElementModels}
-				renderersProps={renderersProps}
-				
-				javaScriptEnabled={true}
-
-				renderers={renderers}
-				
-				// computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
-				// provideEmbeddedHeaders={provideEmbeddedHeaders}
-			/>
-			<Text></Text>
     
-        </ScrollView> 
+		
+		<ScrollView >
+		<View style ={{paddingHorizontal:10,paddingVertical:30}}>
+		<RenderHtml
+		
+			contentWidth={width}
+			source={source}
+			WebView={WebView}
+
+			customHTMLElementModels={customHTMLElementModels}
+			renderersProps={renderersProps}
+			
+			javaScriptEnabled={true}
+
+			renderers={renderers}
+			tagsStyles={tagsStyles}
+			
+			// computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
+			// provideEmbeddedHeaders={provideEmbeddedHeaders}
+		/>
+		</View>
+
+	</ScrollView> 
+		
+        
 
     </>
   )

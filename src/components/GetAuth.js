@@ -2,16 +2,16 @@ import axios from "axios";
 
 
 
-const GetAuth = async (postdata) => {
+const GetAuth = async () => {
     //  일단은 내 아이디 쓰지만, 나중에 get item으로 가져오기
-    console.log("시작")
+    // console.log("시작")
     const baseUrl = 'http://localhost:3000';
 
 
     const authdata = {
         userid : "jhkim73",
-        passwd : "think4u",
-        link : postdata.link
+        passwd : "think4u2",
+        // link : postdata.link
     }
 
     // let Authcheck = await axios.post(baseUrl+'/get_auth_info',authdata )
@@ -21,20 +21,23 @@ const GetAuth = async (postdata) => {
     try {
    
 
-         let Authcheck = await axios.post(baseUrl+'/get_auth_info',authdata )
+         let Authcheck = await axios.post(baseUrl+'/get_auth_info', authdata)
+         const AuthCookieNumber = Authcheck.data['set-cookie'].length
+        //  console.log("어스 체크1", Authcheck.data['set-cookie'].length)
+
+        if (AuthCookieNumber == 4){
+            return Authcheck.data
+
+        } else {
+            return 0
+        }
     
-
-         return Authcheck.data
-
-   
-
-       
 
     } catch(e){
      
    	   console.log(e.message)
 
-       return 'ㄴㄴ'
+       return 0
   
     }
 
