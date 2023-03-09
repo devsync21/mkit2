@@ -19,44 +19,12 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 
-const settingOnPress = (props) => {
-	console.log(props)
-    // const event = props.navigation.emit({
-	// 	type: 'drawerItemPress',
-	// 	target: route.key,
-	// 	canPreventDefault: true,
-	//   });
 
-	//   if (!event.defaultPrevented) {
-	// 	props.navigation.dispatch({
-	// 	  ...(focused
-	// 		? DrawerActions.closeDrawer()
-	// 		: CommonActions.navigate({ name: route.name, merge: true })),
-	// 	  target: props.state.key,
-	// 	});
-	//   }
-}
-
-const SettingMenu = () => {
-  return (
-    <>
-      
-      <View style = {{ paddingHorizontal:10, paddingVertical: 5,
-        borderWidth:1, borderColor:'transparent', borderTopColor:'black',
-        
-        
-      }}>
-        
-        <Ionicons name="settings" size={24} color="black" onPress={settingOnPress} />
-
-      </View>
-    </>
-  )
-}
 
 
 
 const CustomDrawer = (props) => {
+  // console.log("custom drawer", props.navigation)
 
   // 메뉴가 접혀있는지 열려있는지
   const [sectionMenu, setSectionMenu] = useState([
@@ -69,7 +37,40 @@ const CustomDrawer = (props) => {
   ])
    
 
-
+  const settingOnPress = (props) => {
+    console.log("setting on press",props.navigation)
+      // const event = props.navigation.emit({
+    // 	type: 'drawerItemPress',
+    // 	target: route.key,
+    // 	canPreventDefault: true,
+    //   });
+  
+    //   if (!event.defaultPrevented) {
+    // 	props.navigation.dispatch({
+    // 	  ...(focused
+    // 		? DrawerActions.closeDrawer()
+    // 		: CommonActions.navigate({ name: route.name, merge: true })),
+    // 	  target: props.state.key,
+    // 	});
+    //   }
+  }
+  // 아래쪽 세팅 메뉴
+  const SettingMenu = (props) => {
+    return (
+      <>
+        
+        <View style = {{ paddingHorizontal:10, paddingVertical: 5,
+          borderWidth:1, borderColor:'transparent', borderTopColor:'black',
+          
+          
+        }}>
+          
+          <Ionicons name="settings-outline" size={24} color="black" onPress={settingOnPress} />
+  
+        </View>
+      </>
+    )
+  }
 
 ///////////////////////////////// 새로운 커스텀 메뉴들
 
@@ -183,7 +184,7 @@ const CustomDrawer = (props) => {
     Textcolor: 'white',
     backgroundColor :'darkgrey', 
     height: 40,
-    marginBottom: -24,  // 너무 대충 구한것 같기도 하고...방법 찾기
+    marginBottom: -42,  // 너무 대충 구한것 같기도 하고...방법 찾기
     zIndex: 10
     
 
@@ -204,7 +205,9 @@ const CustomDrawer = (props) => {
         // paddingTop: insets.top,
         // paddingBottom: insets.bottom,
       
-      }}>
+      }}
+      {...props}
+      >
 
 
 
@@ -282,7 +285,11 @@ const CustomDrawer = (props) => {
             />
       </DrawerContentScrollView>
       <View>
-          <SettingMenu/>
+          <SettingMenu {...props}/>
+          <DrawerItem {...props}
+              label="setting"
+              onPress={() => {props.navigation.navigate("SettingScreen")}}
+            />
       </View>
     </View>
   )

@@ -79,7 +79,10 @@ const MainScreen =  () => {
 				
 				></View>
 				<Drawer.Navigator 
-				drawerContent={props => <CustomDrawer {...props}/>} 
+				drawerContent={props => 
+				<CustomDrawer {...props}
+					
+				/>} 
 				initialRouteName="생활 Q&A"
 				
 				screenOptions={screenOptions} 
