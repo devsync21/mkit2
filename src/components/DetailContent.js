@@ -184,7 +184,7 @@ const DetailContent = ({route, noData,setNoData}) => {
 	// } 
 
 	try {
-	
+	// 제일 먼저 글을 읽어오려고 시도
 		let res = await axios.post(baseUrl+'/get_board_detail', postdata)  
 	
 
