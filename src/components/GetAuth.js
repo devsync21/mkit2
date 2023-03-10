@@ -1,16 +1,21 @@
 import axios from "axios";
+import React, { useEffect,useState, useContext } from 'react'
+// import AuthContext from "../store/AuthContext";
 
 
 
-const GetAuth = async () => {
+
+const GetAuth = async (Value) => {
     //  일단은 내 아이디 쓰지만, 나중에 get item으로 가져오기
     // console.log("시작")
     const baseUrl = 'http://localhost:3000';
 
+    // const {authValue, setAuthValue} = useContext(AuthContext)
+
 
     const authdata = {
-        userid : "jhkim73",
-        passwd : "think4u2",
+        userid : Value.userid,
+        passwd : Value.passwd
         // link : postdata.link
     }
 
@@ -26,6 +31,10 @@ const GetAuth = async () => {
         //  console.log("어스 체크1", Authcheck.data['set-cookie'].length)
 
         if (AuthCookieNumber == 4){
+            console.log("새 쿠키 얻음")
+            // await setAuthValue(prevState => ({...prevState, cookie : Authcheck.data['set-cookie']}))
+            // console.log("쿠키는 ", authValue)
+
             return Authcheck.data
 
         } else {

@@ -19,6 +19,8 @@ import {
     useSafeAreaInsets,
   } from 'react-native-safe-area-context';
 import CheckAuth from '../components/CheckAuth';
+import InitData from '../components/InitData';
+import SettingContext from '../store/SettingContext';
 
 
 
@@ -44,78 +46,97 @@ const MainScreen =  () => {
 
 	// const checkauth =  CheckAuth()
 	
-	const authfirst = async () => {
+	// const authfirst = async () => {
 		 
-		 const h = await CheckAuth()
-		 console.log("????",h)
-	}
+	// 	 const h = await CheckAuth()
+	// 	 console.log("????",h)
+	
 
-	useEffect(() => {
-		authfirst()
-		// // Update the document title using the browser API
-		//  CheckAuth()
-		
-		
-	  },[]);
-
-	const initialCookieState = {
+	const initialAuthState = {
 		userid : "",
 		passwd : "",
 		cookie : ""
 	}
-    const [cookie, setCookie] = useState (initialCookieState)
+	const initialSetState = {
+		theme : 1,
+		style : {
+			fontSize : 1
+		},
+		
+	}
+    const [authValue, setAuthValue] = useState (initialAuthState)
+    const [setValue, setSetValue] = useState (initialSetState)
+
+	const initializeData = async () => {
+		const initData = await InitData()
+		// console.log("해답은 ",initData)
+		setAuthValue(initData.authValue)
+		setSetValue(initData.setValue)
+
+	}
+
+	useEffect(() => {
+
+		initializeData()
+		
+	  },[]);
+
+
+
 
 
     return (
-        <AuthContext.Provider  value={{cookie, setCookie}}>
-			<NavigationContainer>
-				<View
-				style={{
-	
-					paddingTop: insets.top,
-					backgroundColor:'darkgrey',
+        <AuthContext.Provider value={{authValue, setAuthValue}}>
+			<SettingContext.Provider value={{setValue, setSetValue}}>
+				<NavigationContainer>
+					<View
+					style={{
 		
-				}}
-				
-				></View>
-				<Drawer.Navigator 
-				drawerContent={props => 
-				<CustomDrawer {...props}
-					
-				/>} 
-				initialRouteName="생활 Q&A"
-				
-				screenOptions={screenOptions} 
-				
-				
-				>
-				
-					{ SectionInfo.map((item,id) => {
-						return (
-							<Drawer.Screen 
-								initialParams={{ category: item.id, titleName : item.sectionname}} 
-								name = {item.sectionname} 
-								key={id} 
-								// options={({ route }) => ({ title: route.params.name })}  // title 정보 얻으려고
-								component={BoardScreen} />
-						)
-					
-
-					})}
-
-				</Drawer.Navigator>
-				<View
-				style={{
-	
-					paddingTop: insets.bottom,
-					backgroundColor:'red'
-
-				}}
-				
-				></View>
+						paddingTop: insets.top,
+						backgroundColor:'darkgrey',
 			
+					}}
+					
+					></View>
+					<Drawer.Navigator 
+					drawerContent={props => 
+					<CustomDrawer {...props}
+						
+					/>} 
+					initialRouteName="생활 Q&A"
+					
+					screenOptions={screenOptions} 
+					
+					
+					>
+					
+						{ SectionInfo.map((item,id) => {
+							return (
+								<Drawer.Screen 
+									initialParams={{ category: item.id, titleName : item.sectionname}} 
+									name = {item.sectionname} 
+									key={id} 
+									// options={({ route }) => ({ title: route.params.name })}  // title 정보 얻으려고
+									component={BoardScreen} />
+							)
+						
+
+						})}
+
+					</Drawer.Navigator>
+					<View
+					style={{
+		
+						paddingTop: insets.bottom,
+						backgroundColor:'red'
+
+					}}
+					
+					></View>
 				
-			</NavigationContainer>
+					
+				</NavigationContainer>
+			</SettingContext.Provider>
         </AuthContext.Provider>
        
     );

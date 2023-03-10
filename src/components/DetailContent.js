@@ -122,7 +122,8 @@ const DetailContent = ({route, noData,setNoData}) => {
 	// console.log(route.params.data2.rule)
 	const needAuth = route.params.data2.rule
 
-	const {cookie, setCookie} = useContext(AuthContext)
+	const {authValue, setAuthValue} = useContext(AuthContext)
+
 
 
 	const [detail, setDetail] = useState("")
@@ -139,60 +140,83 @@ const DetailContent = ({route, noData,setNoData}) => {
 	const { width } = useWindowDimensions();
 
 	const postdata = {
-		link :info.data1.link
+		link :info.data1.link,
+		auth : authValue
 	}
 
 	const fontSize = 15 // 나중에 세팅에서 바꿀수 있게
 
-	const chechAuth = async () => {
-		// 쿠키 정보 가져오기
+	// const chechAuth = async () => {
+	// 	// 쿠키 정보 가져오기
 		
-		// console.log("쿠키는", cookie)
-		await setCookie(prevState => ({...prevState, passwd: "lll" }))
-		// console.log("쿠키는22", cookie)  
-	}
+	// 	// console.log("쿠키는", cookie)
+	// 	await setCookie(prevState => ({...prevState, passwd: "lll" }))
+	// 	// console.log("쿠키는22", cookie)  
+	// }
 
   const getDetailAxios = async () =>{
+	console.log("auth value는 ", authValue)
 
-	if (!needAuth){
-		// console.log ("auth 가 필요합니다. ")
-		const Authinfo =  await GetAuth()
-		// console.log("get auth는 ", Authinfo)
-		const postdata3 = {
-			link : info.data1.link,
-			auth : Authinfo
-		}
+	// if (!needAuth){
+	// 	// console.log ("auth 가 필요합니다. ")
+	// 	const Authinfo =  await GetAuth()
+	// 	// console.log("get auth는 ", Authinfo)
+	// 	const postdata3 = {
+	// 		link : info.data1.link,
+	// 		auth : Authinfo
+	// 	}
 
-        let res = await axios.post(baseUrl+'/test3', postdata3)   
+    //     let res = await axios.post(baseUrl+'/test3', postdata3)   
 
-		if (res.data.length > 0){
+	// 	if (res.data.length > 0){
+	// 		const finalHTML = processHTML (res.data)    
+
+	// 		setDetail(finalHTML)
+	// 		return
+	// 	} else {
+	// 		// console.log("set no data")
+	// 		setNoData(true)
+	// 		return
+	// 	}
+
+		
+
+	// } 
+
+	try {
+	
+		let res = await axios.post(baseUrl+'/get_board_detail', postdata)  
+	
+
+			if (res.data.length > 0){
 			const finalHTML = processHTML (res.data)    
 
 			setDetail(finalHTML)
 			return
 		} else {
-			// console.log("set no data")
-			setNoData(true)
+			// 이것은 무언가 문제가 있다는 뜻
+
+			// 아이디도 없다면 방법이 없이 로그인 필요하다고 말하기
+			if (authValue.userid.length = 0){
+				setNoData(true)
+			} else {   //아이디 있다면 쿠키 새로 받는거 실시
+				const cookie = await GetAuth(authValue)
+					if (cookie == 0 ) {
+						setNoData(true)
+
+					} else {
+						//다시한번 시도
+						console.log(cookie)
+						await setAuthValue(prevState => ({...prevState,
+							cookie : cookie
+						}))
+						console.log(authValue)
+					}
+
+			}
+			
 			return
 		}
-
-		
-
-	} 
-
-	try {
-	
-		let res = await axios.post(baseUrl+'/get_board_detail', postdata)   
-	
-			//axios 가 갑자기 안되면 adb reverse tcp:3000 tcp:3000
-
-		
-		// 주로 cheerio 이용해서 html 변환  
-		const finalHTML = processHTML (res.data)    
-
-		// console.log(res)
-	
-		setDetail(finalHTML)
 		
 	} catch(e){
 		
@@ -208,7 +232,7 @@ const DetailContent = ({route, noData,setNoData}) => {
 
   useEffect(() => {
 	// // Update the document title using the browser API
-	chechAuth()
+	// chechAuth()
 	getDetailAxios()
 	
   },[]);

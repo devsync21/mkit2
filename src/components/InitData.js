@@ -9,13 +9,19 @@ import moment from 'moment';
 
 
 
-const initialCookieState = {
-    userid : "jhkim73",
-    passwd : "think4u",
+const initialAuthState = {
+    userid : "",
+    passwd : "",
     cookie : ""
 }
 
-
+const initialSetState = {
+    theme : 1,
+    style : {
+        fontSize : 15
+    },
+    
+}
 
 
 const CookieParse = (items) => {
@@ -34,41 +40,62 @@ const CookieParse = (items) => {
 
 }
 
-const InitData =  async () => {
-    try {
-       
-       
-
-
-
-        const value = await AsyncStorage.getItem('@auth')
-        const jsonvalue = value != null ? JSON.parse(value) : null;
+const initAuthData = async (value) => {
+    const jsonvalue = value != null ? JSON.parse(value) : null;
 
         if (jsonvalue !== null) {
             // We have data!!
-            console.log(jsonvalue.userid);
-            if (jsonvalue.cookie == "" || null) {
 
-		        const Authinfo =  await GetAuth()
-                // const hhh = {"cache-control": "no-cache", "connection": "close", "content-length": "239", "content-type": "text/html", "date": "Tue, 07 Mar 2023 22:25:10 GMT", "expires": "Tue, 07 Mar 2023 22:25:10 GMT", "pragma": "no-cache", "server": "Microsoft-IIS/10.0", "set-cookie": ["saveid=; expires=Mon, 07-Mar-2022 08:00:00 GMT; path=/", "MissyUSA=secu=fea69e5fadb515f488ed754c7c94f503&MemberPermit=3&UserNick=%BD%C2%C8%F1%B8%BE&UserName=jinhee+kim&UserID=jhkim73&Login=loginok; domain=missyusa.com; path=/", "savepw=; expires=Mon, 07-Mar-2022 08:00:00 GMT; path=/", "ASPSESSIONIDCQDCSTTS=LCAKJMGDDPKKDIIIABDALKDN; path=/"]}
+            // console.log(jsonvalue.userid);
+            // if (jsonvalue.cookie == "" || null) {
 
-                const parse = await CookieParse(Authinfo)
-                
-                // console.log(">>>>",Authinfo)
-                // console.log(">>>>",Authinfo['set-cookie']['MissyUSA'])
+		    //     const Authinfo =  await GetAuth()
+               
+            //     const parse = await CookieParse(Authinfo)
+               
+            // }
 
+            return jsonvalue
 
-                
-            }
+        } else {    // no data.. 아마도 처음 시작할때일듯.
 
-            return value
+            // console.log(value);
+            return initialAuthState
+            
+        }
+    
+}
+
+const initSetData = async (value) => {
+    const jsonvalue = value != null ? JSON.parse(value) : null;
+
+        if (jsonvalue !== null) {
+            // We have data!!
+           
+          
+
+            return jsonvalue
 
         } else {
 
-            console.log(value);
-            return initialCookieState
+            
+            return initialSetState
             
         }
+    
+}
+
+const InitData =  async () => {
+    try {
+       
+        const avalue = await AsyncStorage.getItem('@auth')
+        const authValue = await initAuthData(avalue)
+
+        const svalue = await AsyncStorage.getItem('@setting')
+        const setValue = await initSetData(svalue)
+
+        return {authValue, setValue}
+   
     } catch (error) {
         // Error retrieving data
         console.log(error);
