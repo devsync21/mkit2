@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { StyleSheet, Text, View, Button, FlatList, 
           Image, SafeAreaView, TouchableOpacity,
           ActivityIndicator } from 'react-native';
-import axios from "axios";
+// import axios from "axios";
+import instance from '../api/Api';
+
 
 import SectionInfo from '../components/SectionInfo';
 
@@ -15,6 +17,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 // import { useDrawerStatus } from '@react-navigation/drawer';
 // 한참후에 페이지 바뀐뒤에 스크롤하면 어떻게 될까???? 궁금.
 
+import ThemeContext from '../store/ThemeContext';
+import ConfigContext from '../store/ConfigContext';
+
 
 
 
@@ -26,10 +31,15 @@ const [onMomentumScrollBeginBoolean,setOnMomentumScrollBeginBoolean] = useState(
 const [currentPage, setcurrentPage] = useState(1)
 const [isLoading, SetIsLoading] = useState(true)
 
+
+const {themeValue, setThemeValue} = useContext(ThemeContext)
+const {configValue, setConfigValue} = useContext(ConfigContext)
+
+
 // section에 대한 정보들 얻어오기
 let sectioninfo = SectionInfo[route.params.category-1]
 
-const baseUrl = 'http://localhost:3000';
+// const baseUrl = 'http://localhost:3000';
 
 // flatList 아래쪽에 메뉴 공간 만들기
 const flatlistHeight = useWindowDimensions().height - 65
@@ -43,7 +53,7 @@ const getTitleAxios = async (page_num) =>{
   
   try {
     
-    let res = await axios.get(baseUrl+'/get_board_title_lists/'+ sectioninfo.section+'/'+ sectioninfo.sectionid + '/' +page_num)   
+    let res = await instance.get('/get_board_title_lists/'+ sectioninfo.section+'/'+ sectioninfo.sectionid + '/' +page_num)   
   
     //axios 가 갑자기 안되면 adb reverse tcp:3000 tcp:3000
    
@@ -172,7 +182,7 @@ const onEndReached = () => {
     const repl = item.repl.replace('[','').replace(']','')
     
 
-
+	
     return (
       <TouchableOpacity
       // onPress={this.itemClick(item)}
@@ -193,13 +203,23 @@ const onEndReached = () => {
       }
       
     >
-        <View style={styles.flatlistContainer}>
+        <View style={{
+				flexDirection : "column",
+				paddingHorizontal: 10,
+				paddingVertical : 12,
+				
+				borderBottomWidth: 1,
+			  	borderColor: themeValue.Title.TborderColor,
+				backgroundColor: themeValue.Title.TbackgroundColor}}>
           
               <View style = {{flexDirection:'row', justifyContent:'space-between'}}>
                   
                 
                     <View style = {{paddingRight:35}}>
-                          <Text style = {{fontSize:15}}>
+                          <Text style = {{fontSize: configValue.TTfontSize,
+										color: themeValue.Title.TfontColor
+										
+										}}>
                             { item.youtubeicon.length > 0 ? 
                                     <Image source={require('./../../assets/icon_youtube.gif')}/>: <Text></Text>
                                 }
@@ -211,8 +231,9 @@ const onEndReached = () => {
                      { item.repl ? 
 
                                                         
-                    <View style = {{position: 'absolute', right : 0, top: 0, width:25, height: 25, backgroundColor:'powderblue',
-                                  alignItems : 'center', justifyContent:'center', borderRadius:25
+                    <View style = {{position: 'absolute', right : 0, top: 0, width:25, height: 25, 
+									backgroundColor: themeValue.Title.TreplBackgroundColor,
+                                	alignItems : 'center', justifyContent:'center', borderRadius:25
                                   
                                   }}>
 
@@ -255,7 +276,7 @@ const goBack = () => {
 
      
    
-      <View style ={styles.FlatListBigContainer}>
+      <View >
    
           <FlatList style={{height: flatlistHeight}}
             data={dataT}
@@ -316,41 +337,20 @@ const goBack = () => {
 
 // 리턴에 관련된 함수들
 
-const navigateToDetails = () => {
-  navigation.navigate('Detail');
-};
+// const navigateToDetails = () => {
+//   navigation.navigate('Detail');
+// };
 
 
 
-const titleFontSize = (item) =>{
-  if (item == 1) {
-    return {fontSize : 15}
-  } else {
-    return {fontSize : 11}
-  }
-}
+// const titleFontSize = (item) =>{
+//   if (item == 1) {
+//     return {fontSize : 15}
+//   } else {
+//     return {fontSize : 11}
+//   }
+// }
 
-// 스타일에 관련된 함수들
-const styles = StyleSheet.create({
-  FlatListBigContainer : {
-    
-  
-  },
-  flatlistContainer : {
-    flexDirection : "column",
-    paddingHorizontal: 10,
-    paddingVertical : 12,
-    
-    borderBottomWidth: 1,
-    borderColor: "#ddd",
-    // height:330
-  },  
-    
-
-  title:{
-    fontSize : 15
-  }
-});
 
 
 export default BoardTitleScreen
