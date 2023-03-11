@@ -2,7 +2,9 @@ import React from 'react'
 import { useState,useEffect } from 'react'
 
 import { StyleSheet, Text, View, Button, FlatList,SafeAreaView, TouchableOpacity } from 'react-native';
-import axios from "axios";
+// import axios from "axios";
+import instance from '../api/Api';
+
 
 
 const Replies =  ({route}) => {
@@ -10,7 +12,7 @@ const Replies =  ({route}) => {
   const [detailReply, setDetailReply] = useState([])
   const info = route.params  
 
-  const baseUrl = 'http://localhost:3000';
+  // const baseUrl = 'http://localhost:3000';
    
 
   const getDetailReplyAxios = async () => {
@@ -23,11 +25,11 @@ const Replies =  ({route}) => {
                       + info.data2.sectionid + '&'+ replink2[6] + '&' + replink2[7] + '&step=1'
 
 
-    const url = baseUrl + "/get_board_detail_replies"
+    const url = "/get_board_detail_replies"
 
     try {
       
-      let res = await axios.post(url,
+      let res = await instance.post(url,
           data={
             link : newlink
           }

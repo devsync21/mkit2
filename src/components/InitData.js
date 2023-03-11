@@ -3,6 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import GetAuth from './GetAuth';
 import moment from 'moment';
 
+import {SettingTheme, SettingConfig} from '../api/SettingTheme';
+
+
 
 // 제일 처음 프로그램을 시작하면 하는 시작점. 데이터들을 불러온다.
 
@@ -10,50 +13,19 @@ import moment from 'moment';
 
 
 const initialAuthState = {
-    userid : "",
-    passwd : "",
+    userid : "jhkim73",
+    passwd : "think4u",
     cookie : ""
 }
 
-const initialSetState = {
-    theme : 1,
-    style : {
-        fontSize : 15
-    },
-    
-}
 
 
-const CookieParse = (items) => {
-    // console.log('parse ', items['set-cookie'][0])
-    // const item = items['date']
-    
-    const cookieTime = moment(items['date']).utc().format()
-    const timeDiff = moment().diff(cookieTime,'minutes')
-    
-    
-   
-
-    console.log (timeDiff)
-   
-    // console.log(expiretime.getTime())
-
-}
-
+// auth를 초기화하는 함수
 const initAuthData = async (value) => {
     const jsonvalue = value != null ? JSON.parse(value) : null;
 
         if (jsonvalue !== null) {
             // We have data!!
-
-            // console.log(jsonvalue.userid);
-            // if (jsonvalue.cookie == "" || null) {
-
-		    //     const Authinfo =  await GetAuth()
-               
-            //     const parse = await CookieParse(Authinfo)
-               
-            // }
 
             return jsonvalue
 
@@ -66,35 +38,58 @@ const initAuthData = async (value) => {
     
 }
 
-const initSetData = async (value) => {
+// 테마를 초기화하는 함수
+const initThemeData = async (value) => {
     const jsonvalue = value != null ? JSON.parse(value) : null;
+
 
         if (jsonvalue !== null) {
             // We have data!!
-           
-          
 
             return jsonvalue
 
         } else {
-
+            const iss = SettingTheme(1)
             
-            return initialSetState
+            return iss
             
         }
     
 }
 
+// 나머지 세팅을 초기화하는 함수
+const initConfigData = async (value) => {
+    const jsonvalue = value != null ? JSON.parse(value) : null;
+
+
+        if (jsonvalue !== null) {
+            // We have data!!
+
+            return jsonvalue
+
+        } else {
+            const iss = SettingConfig
+            
+            return iss
+            
+        }
+    
+}
+
+// 메인 함수
 const InitData =  async () => {
     try {
        
         const avalue = await AsyncStorage.getItem('@auth')
         const authValue = await initAuthData(avalue)
 
-        const svalue = await AsyncStorage.getItem('@setting')
-        const setValue = await initSetData(svalue)
+        const tvalue = await AsyncStorage.getItem('@theme')
+        const themeValue = await initThemeData(tvalue)
 
-        return {authValue, setValue}
+        const cvalue = await AsyncStorage.getItem('@setting')
+        const configValue = await initConfigData(cvalue)
+
+        return {authValue, themeValue, configValue}
    
     } catch (error) {
         // Error retrieving data
