@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { StyleSheet, Text, View, Button, FlatList,SafeAreaView } from 'react-native';
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import {
@@ -17,7 +17,8 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 
-
+import ThemeContext from '../store/ThemeContext';
+import ConfigContext from '../store/ConfigContext';
 
 
 
@@ -26,55 +27,61 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 const CustomDrawer = (props) => {
   // console.log("custom drawer", props.navigation)
 
-  // 메뉴가 접혀있는지 열려있는지
-  const [sectionMenu, setSectionMenu] = useState([
-      {isOpened: true},
-      {isOpened: true},
-      {isOpened: true},
-      {isOpened: true},
-      {isOpened: true},
-      
-  ])
+
+  	const {themeValue, tdispatch} = useContext(ThemeContext)
+	const {configValue, setConfigValue} = useContext(ConfigContext)
+
+
+
+	// 메뉴가 접혀있는지 열려있는지
+	const [sectionMenu, setSectionMenu] = useState([
+		{isOpened: true},
+		{isOpened: true},
+		{isOpened: true},
+		{isOpened: true},
+		{isOpened: true},
+		
+	])
    
 
-  const settingOnPress = (props) => {
-    console.log("setting on press",props.navigation)
-      // const event = props.navigation.emit({
-    // 	type: 'drawerItemPress',
-    // 	target: route.key,
-    // 	canPreventDefault: true,
-    //   });
-  
-    //   if (!event.defaultPrevented) {
-    // 	props.navigation.dispatch({
-    // 	  ...(focused
-    // 		? DrawerActions.closeDrawer()
-    // 		: CommonActions.navigate({ name: route.name, merge: true })),
-    // 	  target: props.state.key,
-    // 	});
-    //   }
-  }
-  // 아래쪽 세팅 메뉴
-  const SettingMenu = (props) => {
-    return (
-      <>
-        
-        <View style = {{ paddingHorizontal:10, paddingVertical: 5,
-          borderWidth:1, borderColor:'transparent', borderTopColor:'black',
-          
-          
-        }}>
-          
-          <Ionicons name="settings-outline" size={24} color="black" onPress={settingOnPress} />
-  
-        </View>
-      </>
-    )
+	const settingOnPress = (props) => {
+		console.log("setting on press",props.navigation)
+		// const event = props.navigation.emit({
+		// 	type: 'drawerItemPress',
+		// 	target: route.key,
+		// 	canPreventDefault: true,
+		//   });
+	
+		//   if (!event.defaultPrevented) {
+		// 	props.navigation.dispatch({
+		// 	  ...(focused
+		// 		? DrawerActions.closeDrawer()
+		// 		: CommonActions.navigate({ name: route.name, merge: true })),
+		// 	  target: props.state.key,
+		// 	});
+		//   }
+	}
+	// 아래쪽 세팅 메뉴
+	const SettingMenu = (props) => {
+		return (
+		<>
+			
+			<View style = {{ paddingHorizontal:10, paddingVertical: 5,
+			borderWidth:1, borderColor:'transparent', borderTopColor: themeValue.Drawer.DborderColor,
+			
+			
+			}}>
+			
+			<Ionicons name="settings-outline" size={24} color="black" onPress={settingOnPress} />
+	
+			</View>
+		</>
+		)
   }
 
 ///////////////////////////////// 새로운 커스텀 메뉴들
 
-  const DrawerItemListCustom = (props) =>{
+  	const DrawerItemListCustom = (props) =>{
     // console.log(props)
 
     const buildLink = useLinkBuilder();
@@ -126,7 +133,6 @@ const CustomDrawer = (props) => {
         drawerAllowFontScaling,
       } = props.descriptors[route.key].options;
 
-
     return (
       <DrawerItem
         key={route.key}
@@ -140,8 +146,8 @@ const CustomDrawer = (props) => {
         icon={drawerIcon}
         focused={focused}
         activeTintColor={drawerActiveTintColor}
-        inactiveTintColor={drawerInactiveTintColor}
-        activeBackgroundColor={drawerActiveBackgroundColor}
+        inactiveTintColor={themeValue.Drawer.DinactiveTintColor}
+        activeBackgroundColor={themeValue.Drawer.DmenuBackgroundColor}
         inactiveBackgroundColor={drawerInactiveBackgroundColor}
         allowFontScaling={drawerAllowFontScaling}
         labelStyle={drawerLabelStyle}
@@ -171,8 +177,8 @@ const CustomDrawer = (props) => {
 
   const styleDrawerSection = {
     //  color: "#609806", 
-    Textcolor: 'white',
-    backgroundColor :'darkgrey', 
+ 
+    backgroundColor :themeValue.Drawer.DfixedMenuBackgroundColor, 
     height: 40,
     
     
@@ -181,8 +187,8 @@ const CustomDrawer = (props) => {
   }
   const styleDrawerSectionFixed = {
     //  color: "#609806", 
-    Textcolor: 'white',
-    backgroundColor :'darkgrey', 
+ 
+    backgroundColor :themeValue.Drawer.DfixedMenuBackgroundColor, 
     height: 40,
     marginBottom: -42,  // 너무 대충 구한것 같기도 하고...방법 찾기
     zIndex: 10
@@ -191,7 +197,7 @@ const CustomDrawer = (props) => {
   }
 
   const labelStyleDrawerSection = {
-    color : 'white',
+    color : themeValue.Drawer.DfixedMenuFontColor,
     fontSize : 12,
     
   }
@@ -204,6 +210,7 @@ const CustomDrawer = (props) => {
   
         paddingTop: insets.top,
         // paddingBottom: insets.bottom,
+		backgroundColor: themeValue.Drawer.DbackgroundColor
       
       }}
       {...props}
@@ -288,6 +295,8 @@ const CustomDrawer = (props) => {
           <SettingMenu {...props}/>
           <DrawerItem {...props}
               label="setting"
+			//   style={styleDrawerSection}
+              labelStyle = {labelStyleDrawerSection}
               onPress={() => {props.navigation.navigate("SettingScreen")}}
             />
       </View>

@@ -32,8 +32,11 @@ const [currentPage, setcurrentPage] = useState(1)
 const [isLoading, SetIsLoading] = useState(true)
 
 
-const {themeValue, setThemeValue} = useContext(ThemeContext)
+const {themeValue, tdispatch} = useContext(ThemeContext)
 const {configValue, setConfigValue} = useContext(ConfigContext)
+
+
+ 
 
 
 // section에 대한 정보들 얻어오기
@@ -209,7 +212,7 @@ const onEndReached = () => {
 				paddingVertical : 12,
 				
 				borderBottomWidth: 1,
-			  	borderColor: themeValue.Title.TborderColor,
+			  borderColor: themeValue.Title.TborderColor,      
 				backgroundColor: themeValue.Title.TbackgroundColor}}>
           
               <View style = {{flexDirection:'row', justifyContent:'space-between'}}>
@@ -237,7 +240,7 @@ const onEndReached = () => {
                                   
                                   }}>
 
-                       <Text style = {{fontSize: 11}}>{repl}</Text>
+                       <Text style = {{fontSize: 11, color:themeValue.Title.TreplfontColor}}>{repl}</Text>
                     </View>    : <View></View>
                     }
                   
@@ -247,9 +250,11 @@ const onEndReached = () => {
 
 
             <View style = {{flexDirection:'row', marginTop:5}}>
-              <Text style = {{fontSize:11, marginRight: 10}}>{item.date}</Text>
+              <Text style = {{fontSize:11, marginRight: 10,
+              color:  themeValue.Title.TsmFontColor
+              }}>{item.date}</Text>
               
-              <Text style = {{fontSize:11}}>{item.read} </Text>
+              <Text style = {{fontSize:11, color:  themeValue.Title.TsmFontColor}}>{item.read} </Text>
             </View>
 
         </View>
@@ -275,9 +280,9 @@ const goBack = () => {
 
 
      
-   
+          
       <View >
-   
+          
           <FlatList style={{height: flatlistHeight}}
             data={dataT}
             renderItem={renderItem}

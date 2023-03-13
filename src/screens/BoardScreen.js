@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BoardTitleScreen from './BoardTitleScreen';
 import BoardDetailScreen from './BoardDetailScreen';
 import SettingScreen from './SettingScreen';
+import SettingThemeScreen from './SettingThemeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,10 @@ const BoardScreen = ({route}) => {
 			/>  
 
 		<Stack.Screen name="SettingScreen" component={SettingScreen} 
+		
+		/>    
+    
+		<Stack.Screen name="SettingThemeScreen" component={SettingThemeScreen} 
 		
 		/>    
      

@@ -1,5 +1,5 @@
 import *  as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import { Button, View, Text, Image } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,12 +8,15 @@ import CustomDrawer from '../components/CustomDrawer';
 // import BoardTitleScreen from './src/screens/BoardTitleScreen';
 import BoardScreen from './BoardScreen';
 import SectionInfo from '../components/SectionInfo';
+
 // import { useWindowDimensions } from 'react-native';
 // import {Dimensions }  from 'react-native'
 
 import {AuthContext} from '../store/AuthContext';
 import {ThemeContext} from '../store/ThemeContext';
 import {ConfigContext} from '../store/ConfigContext';
+
+import reducer from '../reducer/reducer';
 
 
 
@@ -56,12 +59,15 @@ const MainScreen = () => {
 		cookie : ""
 	}
 	
-	const initialThemeState =  SettingTheme(1)   
+	const initialThemeState =  SettingTheme(8)   
 
 
     const [authValue, setAuthValue] = useState (initialAuthState)
-    const [themeValue, setThemeValue] = useState (initialThemeState)
+    // const [themeValue, setThemeValue] = useState (initialThemeState)
     const [configValue, setConfigValue] = useState (SettingConfig)
+	const [themeValue, tdispatch] = useReducer(reducer, initialThemeState)
+
+	// console.log(ThemeValue)
 
 
 
@@ -69,7 +75,8 @@ const MainScreen = () => {
 		const initData = await InitData()
 		// console.log("해답은 ",initData)
 		setAuthValue(initData.authValue)
-		setThemeValue(initData.themeValue)
+		// setThemeValue(initData.themeValue)
+		tdispatch({type: 'CHANGE_THEME', value: initData.themeValue})
 		setConfigValue(initData.configValue)
 
 	}
@@ -85,7 +92,7 @@ const MainScreen = () => {
 
     return (
         <AuthContext.Provider value={{authValue, setAuthValue}}>
-			<ThemeContext.Provider value={{themeValue, setThemeValue}}>
+			<ThemeContext.Provider value={{themeValue, tdispatch}}>
 				<ConfigContext.Provider value={{configValue, setConfigValue}}>
 					<NavigationContainer>
 						{/* <View

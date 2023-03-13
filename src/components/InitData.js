@@ -49,7 +49,7 @@ const initThemeData = async (value) => {
             return jsonvalue
 
         } else {
-            const iss = SettingTheme(1)
+            const iss = SettingTheme(8)
             
             return iss
             

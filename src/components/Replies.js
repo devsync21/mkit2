@@ -1,9 +1,12 @@
 import React from 'react'
-import { useState,useEffect } from 'react'
+import { useState,useEffect, useContext } from 'react'
 
 import { StyleSheet, Text, View, Button, FlatList,SafeAreaView, TouchableOpacity } from 'react-native';
 // import axios from "axios";
 import instance from '../api/Api';
+
+import ThemeContext from '../store/ThemeContext';
+import ConfigContext from '../store/ConfigContext';
 
 
 
@@ -13,6 +16,11 @@ const Replies =  ({route}) => {
   const info = route.params  
 
   // const baseUrl = 'http://localhost:3000';
+
+  
+  const {themeValue, tdispatch} = useContext(ThemeContext)
+	const {configValue, setConfigValue} = useContext(ConfigContext)
+
    
 
   const getDetailReplyAxios = async () => {
@@ -73,11 +81,16 @@ const Replies =  ({route}) => {
         <View >
             <View style = {{flexDirection:'row', justifyContent:'space-between', marginBottom:5}}>
                   {/* <Text >{item.item.rep_no}</Text>  */}
-                  <Text style = {{fontSize:11, marginLeft:0, color: 'grey'}}>{item.item.ip_address}</Text>   
-                  <Text style = {{fontSize:11, marginRight:5, color: 'grey'}}>{newdatetime}</Text>  
+                  <Text style = {{fontSize:configValue.RcommonFontSize, marginLeft:0, 
+					color: themeValue.Reply.RsmFontColr}}>
+						{item.item.ip_address}</Text>   
+                  <Text style = {{fontSize:configValue.RcommonFontSize, marginRight:5, 
+					color: themeValue.Reply.RsmFontColr}}>
+						{newdatetime}</Text>  
             </View>
             <View>
-                   <Text style = {{fontSize:15}}>{htmlDetail(item.item.rep_detail)}</Text> 
+                   <Text style = {{fontSize:configValue.RfontSize,
+				color: themeValue.Reply.RfontColor}}>{htmlDetail(item.item.rep_detail)}</Text> 
             </View>
        </View>    
 
@@ -94,43 +107,46 @@ const Replies =  ({route}) => {
             // onPress={this.itemClick(item)}
             // onPress =  () =>  console.log('dd')
             
-        >
-                  <View style = {styles.replContainer}>
-                   
-                      { item.item.rep_rep_icon === 0 ?   
-                          // 대댓글
-                          <View style={{paddingLeft : 30, paddingTop:20, paddingBottom:20}}> 
-             
-                              { item.item.if_deleted.length === 0 ?
-                                    <ReplyCommonItem item = {item.item}/>
-                                    :
-                                    <View>
-                                        <Text style = {{color:'grey'}}> {item.item.if_deleted} </Text>
-                                    </View>
-                              }
-                              
-                            
-                          </View> :
+       		>
+				<View style = {{   
+					borderTopWidth : 1,
+					paddingRight: 15,
+					borderTopColor: themeValue.Reply.RborderColor}}>
+				
+					{ item.item.rep_rep_icon === 0 ?   
+						// 대댓글
+						<View style={{paddingLeft : 30, paddingTop:20, paddingBottom:20}}> 
+			
+							{ item.item.if_deleted.length === 0 ?
+								<ReplyCommonItem item = {item.item}/>
+								:
+								<View>
+									<Text style = {{color: themeValue.Reply.RdeletedFontColor}}> {item.item.if_deleted} </Text>
+								</View>
+							}
+							
+						
+						</View> :
 
 
-                         //  댓글 
-                          <View style={{paddingLeft : 10, paddingTop:20, paddingBottom:20}}> 
-                            
-                       
-                              { item.item.if_deleted.length === 0 ?
-                                    <ReplyCommonItem item = {item.item}/>
-                                    :
-                                    <View>
-                                          <Text style = {{color:'grey'}}> {item.item.if_deleted} </Text>
-                                    </View>
+						//  댓글 
+						<View style={{paddingLeft : 10, paddingTop:20, paddingBottom:20}}> 
+						
+					
+							{ item.item.if_deleted.length === 0 ?
+								<ReplyCommonItem item = {item.item}/>
+								:
+								<View>
+										<Text style = {{color:themeValue.Reply.RdeletedFontColor}}> {item.item.if_deleted} </Text>
+								</View>
 
-                              }
+							}
 
-                          </View>
+						</View>
 
 
-                      }
-                  </View>
+					}
+				</View>
             </TouchableOpacity>
         )
     
@@ -139,8 +155,12 @@ const Replies =  ({route}) => {
 // 메일 return
   return (
     <>
-    <View  >
-    <Text>댓글 {detailReply.length}</Text>
+    <View  style = {{
+		backgroundColor: themeValue.Reply.RbackgroundColor
+	}}>
+    <Text style = {{
+		color: themeValue.Reply.RnumfontColor
+	}}>댓글 {detailReply.length}</Text>
 
 
         { detailReply && detailReply.length > 0 ? detailReply.map((item, id) => {
@@ -153,12 +173,6 @@ const Replies =  ({route}) => {
   )
 }
 // 스타일에 관련된 함수들
-const styles = StyleSheet.create({
-  replContainer :{
-    borderTopWidth : 1,
-    paddingRight: 15,
-    borderTopColor: 'darkgrey'
-  }
-}); 
+
 
 export default Replies

@@ -14,6 +14,8 @@ import AuthContext from '../store/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+import ThemeContext from '../store/ThemeContext';
+import ConfigContext from '../store/ConfigContext';
 
 
 var iconv = require('iconv-lite');
@@ -127,6 +129,9 @@ const DetailContent = ({route, noData,setNoData}) => {
 
 	// 시작할때 auth value 가져옴
 	const {authValue, setAuthValue} = useContext(AuthContext)
+
+	const {themeValue, tdispatch} = useContext(ThemeContext)
+	const {configValue, setConfigValue} = useContext(ConfigContext)
 
 
 	// 게시판 글 내용
@@ -260,9 +265,11 @@ const DetailContent = ({route, noData,setNoData}) => {
 
   const tagsStyles = {
 	div: {
-	  whiteSpace: 'normal',
-	  lineHeight: 20,
-	  fontSize: fontSize
+		whiteSpace: 'normal',
+		lineHeight: configValue.ClineHeight,
+		fontSize: configValue.CfontSize,
+
+		color : themeValue.Content.CfontColor
 	 
 	},
 	
@@ -274,7 +281,9 @@ const DetailContent = ({route, noData,setNoData}) => {
     
 		
 		<ScrollView >
-		<View style ={{paddingHorizontal:10,paddingVertical:30}}>
+		<View style ={{paddingHorizontal:10,paddingVertical:30,
+		backgroundColor: themeValue.Content.CbackgroundColor
+		}}>
 		<RenderHtml
 		
 			contentWidth={width}
