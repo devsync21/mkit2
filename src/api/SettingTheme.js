@@ -62,12 +62,15 @@ const SettingThemeAll = [
 
 // theme 에는 들어가지 않는 내용들
 const SettingConfig = {
+   
     // T: Title /  D: Drawer / R:Reply / C:Content
     TTfontSize : 15,  // 타이틀 제목 글자 크기
     CfontSize :15,     // 콘텐트 글자 크기
-    ClineHeight: 20,     //콘텐트 라인 크기
+    ClineHeight: 20 ,     //콘텐트 라인 크기
     RfontSize:15,        //댓글 글자 크기
-    RcommonFontSize: 11    // 댓글 아이피/시간 글자 크기
+    RcommonFontSize: 11,    // 댓글 아이피/시간 글자 크기
+
+  
 
 
 

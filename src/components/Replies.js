@@ -18,8 +18,8 @@ const Replies =  ({route}) => {
   // const baseUrl = 'http://localhost:3000';
 
   
-  const {themeValue, tdispatch} = useContext(ThemeContext)
-	const {configValue, setConfigValue} = useContext(ConfigContext)
+  	const {themeValue, tdispatch} = useContext(ThemeContext)
+	const {configValue} = useContext(ConfigContext)
 
    
 
@@ -154,13 +154,14 @@ const Replies =  ({route}) => {
 
 // 메일 return
   return (
-    <>
+   
     <View  style = {{
+		flex:1,
 		backgroundColor: themeValue.Reply.RbackgroundColor
 	}}>
-    <Text style = {{
-		color: themeValue.Reply.RnumfontColor
-	}}>댓글 {detailReply.length}</Text>
+		<Text style = {{
+			color: themeValue.Reply.RnumfontColor
+		}}>댓글 {detailReply.length}</Text>
 
 
         { detailReply && detailReply.length > 0 ? detailReply.map((item, id) => {
@@ -169,7 +170,7 @@ const Replies =  ({route}) => {
         }) : ""}
    
       </View>
-    </>
+
   )
 }
 // 스타일에 관련된 함수들

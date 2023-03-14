@@ -15,17 +15,8 @@ const screenOptions = {
   // headerShown: false
 }
 
-const BoardScreen = ({route}) => {
-
-    // console.log(route)
-    // console.log(route.params.titleName)
-
-    // const routeName = navigation.getState().routes[0].name
-    // console.log('changed drawer 000', navigation)
-
-    // useEffect(()=> {
-    // 	console.log('changed drawer 000', navigation.getState().routes[0].name)
-    // }, [routeName])
+const BoardScreen = ({route,navigation}) => {
+	console.log("sss",navigation)
 
   return (
 
@@ -37,11 +28,20 @@ const BoardScreen = ({route}) => {
 			component={BoardTitleScreen}       
 			initialParams={{ category: route.params.category, titleName : route.params.titleName}}
 
+			// options={(navigation) => {
+			// 	console.log("DDDD",navigation.navigation)
+			// 	let parent = navigation.navigation.dangerouslyGetParent();
+			// 	parent.setOptions({
+			// 		gestureEnabled: false
+			// 	})
+			// }}
+
 		/>
 
 
 		<Stack.Screen name="DetailScreen" component={BoardDetailScreen} 
 		
+			
 			/>  
 
 		<Stack.Screen name="SettingScreen" component={SettingScreen} 

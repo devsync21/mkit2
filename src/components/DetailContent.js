@@ -131,7 +131,7 @@ const DetailContent = ({route, noData,setNoData}) => {
 	const {authValue, setAuthValue} = useContext(AuthContext)
 
 	const {themeValue, tdispatch} = useContext(ThemeContext)
-	const {configValue, setConfigValue} = useContext(ConfigContext)
+	const {configValue} = useContext(ConfigContext)
 
 
 	// 게시판 글 내용

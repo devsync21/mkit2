@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useMemo } from 'react'
 import { StyleSheet, Text, View, Button, FlatList, 
           Image, SafeAreaView, TouchableOpacity,
           ActivityIndicator } from 'react-native';
@@ -33,7 +33,7 @@ const [isLoading, SetIsLoading] = useState(true)
 
 
 const {themeValue, tdispatch} = useContext(ThemeContext)
-const {configValue, setConfigValue} = useContext(ConfigContext)
+const {configValue} = useContext(ConfigContext)
 
 
  
@@ -105,10 +105,19 @@ useEffect(() => {
 
 //만일 디테일 정보볼때 제스쳐하면 제목 목록으로, 제목볼때는 drawer menu
 const toggleGesture = () => {
-	// console.log("changed", navigation.canGoBack())
+	
 	const current = navigation.getState().index
 	const parent = navigation.getParent()
+	console.log("changed5", navigation.screenOptions )
+	// console.log("changed9", navigation.getParent().getState())
+
 	// console.log("after changed ", navigation.getParent())
+
+	navigation.setOptions({
+		swipeEnabled:true,
+   		 gestureEnabled:true
+	})
+
 	if (current != 0) {
 		parent.setOptions({ swipeEnabled: false })
 	} else {
@@ -123,15 +132,15 @@ const toggleGesture = () => {
 
 }
 	//만일 디테일 정보볼때 제스쳐하면 제목 목록으로, 제목볼때는 drawer menu
-	useEffect(() => {
-	const unsubscribe = navigation.addListener('transitionEnd', (e) => {
-		// console.log("changed",e)
-		toggleGesture()
-	  // Do something
-	});
-  
-	return unsubscribe;
-  }, [navigation]);
+// 	useEffect(() => {
+//     const unsubscribe = navigation.addListener('transitionEnd', (e) => {
+//       console.log("changed3",e)
+//       toggleGesture()
+//       // Do something
+//     });
+    
+//     return unsubscribe;
+//   }, [navigation]);
 
 
 // 받아온 데이터 가공

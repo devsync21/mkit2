@@ -5,6 +5,8 @@ import { ScrollView, View, Text  } from 'react-native';
 import Replies from '../components/Replies';
 
 import DetailContent from '../components/DetailContent';
+import ThemeContext from '../store/ThemeContext';
+import ConfigContext from '../store/ConfigContext';
 
 
 
@@ -18,6 +20,8 @@ const DetailScreen = ({navigation,route}) => {
 
 
 const [noData, setNoData] = useState(false)
+const {themeValue, tdispatch} = useContext(ThemeContext)
+const {configValue} = useContext(ConfigContext)
   
 
   return (
@@ -31,16 +35,19 @@ const [noData, setNoData] = useState(false)
 
 			
 		</View> :
-
-      <ScrollView >
+        <View style = {{flex:1, backgroundColor: themeValue.Reply.RbackgroundColor}}>
+          <ScrollView >
+        
 	 
       
-          <DetailContent route ={route} noData = {noData} setNoData ={setNoData}/>
+          <DetailContent route ={route} noData = {noData} setNoData ={setNoData} />
       
           <Replies route = {route}/>
-	  
 
-      </ScrollView> 
+        
+
+          </ScrollView> 
+        </View>
 	}
 
     </>

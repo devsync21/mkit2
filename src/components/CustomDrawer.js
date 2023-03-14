@@ -29,7 +29,7 @@ const CustomDrawer = (props) => {
 
 
   	const {themeValue, tdispatch} = useContext(ThemeContext)
-	const {configValue, setConfigValue} = useContext(ConfigContext)
+	const {configValue} = useContext(ConfigContext)
 
 
 

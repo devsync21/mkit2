@@ -17,6 +17,7 @@ import {ThemeContext} from '../store/ThemeContext';
 import {ConfigContext} from '../store/ConfigContext';
 
 import reducer from '../reducer/reducer';
+import fontReducer from '../reducer/fontReducer';
 
 
 
@@ -64,7 +65,7 @@ const MainScreen = () => {
 
     const [authValue, setAuthValue] = useState (initialAuthState)
     // const [themeValue, setThemeValue] = useState (initialThemeState)
-    const [configValue, setConfigValue] = useState (SettingConfig)
+    const [configValue, fdispatch] = useReducer (fontReducer, SettingConfig)
 	const [themeValue, tdispatch] = useReducer(reducer, initialThemeState)
 
 	// console.log(ThemeValue)
@@ -77,7 +78,7 @@ const MainScreen = () => {
 		setAuthValue(initData.authValue)
 		// setThemeValue(initData.themeValue)
 		tdispatch({type: 'CHANGE_THEME', value: initData.themeValue})
-		setConfigValue(initData.configValue)
+		// fdispatch({type : 'CHANGE_FONT', value :initData.configValue})
 
 	}
 
@@ -93,7 +94,7 @@ const MainScreen = () => {
     return (
         <AuthContext.Provider value={{authValue, setAuthValue}}>
 			<ThemeContext.Provider value={{themeValue, tdispatch}}>
-				<ConfigContext.Provider value={{configValue, setConfigValue}}>
+				<ConfigContext.Provider value={{configValue, fdispatch}}>
 					<NavigationContainer>
 						{/* <View
 						style={{
