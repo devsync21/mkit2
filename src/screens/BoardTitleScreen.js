@@ -128,10 +128,10 @@ useEffect(() => {
     setcurrentPage(1)
 },[route])
 
-// useEffect(() => {
-  
-//     handlePresentModalPress()
-// },[])
+useEffect(() => {
+	console.log("?", bottomSheetRef)
+    bottomSheetRef.current.present()
+},[])
 
 
 
@@ -316,7 +316,7 @@ const onEndReached = () => {
       {
         isLoading === false ?
           
-      <View style={{height:400}}>
+      <View >
           
           <FlatList 
             data={dataT}
