@@ -23,7 +23,12 @@ const SettingThemeAll = [
             TsmFontColor: '#b0b3b8',   //타이틀 작은 제목 (시간/아이피)
 
             TreplBackgroundColor : '#b3b3b3', // 타이틀 제목에 댓글수 배경색
-            TreplfontColor: '#ffffff'   // 타이틀 제목에 댓글수 글자색
+            TreplfontColor: '#ffffff',   // 타이틀 제목에 댓글수 글자색
+
+            TbottomMenuBackgroundColor: '#474747', //하단 메뉴 바탕색
+            TBottomMenufontColor : 'white'  //하단 메뉴 글자색
+
+            
         },
 
         Drawer : {

@@ -16,7 +16,7 @@ const screenOptions = {
 }
 
 const BoardScreen = ({route,navigation}) => {
-	console.log("sss",navigation)
+	// console.log("sss",navigation)
 
   return (
 
@@ -28,20 +28,13 @@ const BoardScreen = ({route,navigation}) => {
 			component={BoardTitleScreen}       
 			initialParams={{ category: route.params.category, titleName : route.params.titleName}}
 
-			// options={(navigation) => {
-			// 	console.log("DDDD",navigation.navigation)
-			// 	let parent = navigation.navigation.dangerouslyGetParent();
-			// 	parent.setOptions({
-			// 		gestureEnabled: false
-			// 	})
-			// }}
+			options={{ headerShown: false }}
 
 		/>
 
 
 		<Stack.Screen name="DetailScreen" component={BoardDetailScreen} 
-		
-			
+			 options={{ headerShown: false }}
 			/>  
 
 		<Stack.Screen name="SettingScreen" component={SettingScreen} 

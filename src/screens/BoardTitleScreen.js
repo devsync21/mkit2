@@ -1,19 +1,28 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react'
+import React, { useEffect, useState, useContext, useMemo, useRef, useCallback  } from 'react'
 import { StyleSheet, Text, View, Button, FlatList, 
           Image, SafeAreaView, TouchableOpacity,
-          ActivityIndicator } from 'react-native';
+          ActivityIndicator,  Pressable } from 'react-native';
 // import axios from "axios";
+// import Modal from 'react-native-modal';
+// import  {
+// 	BottomSheetModal,
+// 	BottomSheetModalProvider,
+//   }from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFooter } from '@gorhom/bottom-sheet';
 import instance from '../api/Api';
 
 
 import SectionInfo from '../components/SectionInfo';
+import BottomMenuTitle from '../components/BottomMenuTitle';
+
 
 import { useWindowDimensions } from 'react-native';
 
 
 import { useDrawerStatus } from '@react-navigation/drawer';
 
-import Ionicons from '@expo/vector-icons/Ionicons';
+// import Ionicons from '@expo/vector-icons/Ionicons';
+import { MaterialIcons } from '@expo/vector-icons'; 
 // import { useDrawerStatus } from '@react-navigation/drawer';
 // 한참후에 페이지 바뀐뒤에 스크롤하면 어떻게 될까???? 궁금.
 
@@ -29,12 +38,35 @@ const BoardTitleScreen = ({ navigation, route }  ) => {
 const [dataT, setDataT] = useState([])
 const [onMomentumScrollBeginBoolean,setOnMomentumScrollBeginBoolean] = useState(false)
 const [currentPage, setcurrentPage] = useState(1)
-const [isLoading, SetIsLoading] = useState(true)
+const [isLoading, setIsLoading] = useState(true)
+
+// const [modalVisible, setModalVisible] = useState(false)
 
 
 const {themeValue, tdispatch} = useContext(ThemeContext)
 const {configValue} = useContext(ConfigContext)
 
+//모달에 관련된 내용들 시작
+// const bottomSheetRef = useRef<BottomSheet>(null);
+// const bottomSheetRef = useRef<BottomSheet | null>(null);
+const bottomSheetRef  = useRef(null)
+
+
+// variables
+const snapPoints = useMemo(() => [45,'50%'], []);
+
+ // renders
+ const renderFooter = useCallback(
+    props => (
+      <BottomSheetFooter {...props} bottomInset={24}>
+        <View >
+          <Text >Footer</Text>
+        </View>
+      </BottomSheetFooter>
+    ),
+    []
+  );
+//모달에 관련된 내용들 끝
 
  
 
@@ -75,7 +107,7 @@ const getTitleAxios = async (page_num) =>{
       // console.log(" 처음 한번 데이터 넣기 current page", currentPage, dataT)
     }
     
-    SetIsLoading(false)
+    setIsLoading(false)
 
   } catch(e){
     setDataT([])
@@ -96,11 +128,11 @@ useEffect(() => {
     setcurrentPage(1)
 },[route])
 
-// const routeName = navigation.getState().routes[0].name
-// useEffect(()=> {
-// 	console.log('changed drawer options')
-// }, [navigation.canGoBack()])
-// console.log("haha11", navigation)
+// useEffect(() => {
+  
+//     handlePresentModalPress()
+// },[])
+
 
 
 //만일 디테일 정보볼때 제스쳐하면 제목 목록으로, 제목볼때는 drawer menu
@@ -221,7 +253,7 @@ const onEndReached = () => {
 				paddingVertical : 12,
 				
 				borderBottomWidth: 1,
-			  borderColor: themeValue.Title.TborderColor,      
+				borderColor: themeValue.Title.TborderColor,      
 				backgroundColor: themeValue.Title.TbackgroundColor}}>
           
               <View style = {{flexDirection:'row', justifyContent:'space-between'}}>
@@ -263,7 +295,7 @@ const onEndReached = () => {
               color:  themeValue.Title.TsmFontColor
               }}>{item.date}</Text>
               
-              <Text style = {{fontSize:11, color:  themeValue.Title.TsmFontColor}}>{item.read} </Text>
+              <Text style = {{fontSize:11, color:  themeValue.Title.TsmFontColor}}> {item.read} </Text>
             </View>
 
         </View>
@@ -273,26 +305,20 @@ const onEndReached = () => {
   }
   
   // const isDrawerOpen = useDrawerStatus() === 'open';
-const goBack = () => {
-  
-  navigation.toggleDrawer();
-  
-}
 
 
 
 // 메인 함수의 리턴.
   return (
+
     <View >
+
       {
         isLoading === false ?
-
-
-     
           
-      <View >
+      <View style={{height:400}}>
           
-          <FlatList style={{height: flatlistHeight}}
+          <FlatList 
             data={dataT}
             renderItem={renderItem}
             keyExtractor={(item,index) => index.toString()}
@@ -306,6 +332,7 @@ const goBack = () => {
       </View> :
 
       // axios에서 제목 목록 불러올때까지 로딩중 표시
+
       <View style = {{
         height: flatlistHeight, 
         flexDirection: 'row',
@@ -322,30 +349,44 @@ const goBack = () => {
    
 
       {/* 하단에 메뉴 */}
-      <View style = {{  
-          
-            width: "100%",
-            height: "100%",
-           
-            backgroundColor: '#ababab',
-            flexDirection:'row',
-            paddingHorizontal: 20,
-            paddingVertical: 10,
-            // alignItems:'center',
-            justifyContent: 'space-between'
-            }}>
-                <TouchableOpacity onPress={goBack}>
-                <Ionicons name="arrow-back" size={24} color="white" />
-              
-                
-                </TouchableOpacity>
-                <Text style= {{fontWeight:'bold', color:'white'}}>{route.params.titleName}</Text>
-                <Ionicons name="arrow-back" size={24} color="transparent"  />
-       
-          </View>
-     
+{/* 
+	  <BottomMenuTitle
+	  	route = {route}
+		navigation = {navigation}
+		pressSearch = {handlePresentModalPress}
+	  />
+      */}
+			 {/* <BottomMenuTitle
+								route = {route}
+								navigation = {navigation}
+								pressSearch = {console.log('sd')}
+							/> */}
+			<View  style={{
+				    flex: 1,
+					padding: 24,
+					backgroundColor: 'green',
+				
+			}}>
+				<BottomSheet
+					ref={bottomSheetRef}
+					index={0}
+					snapPoints={snapPoints}
+					// footerComponent={renderFooter}
+					handleStyle={{display:"none"}}
 
-    </View>
+				>
+					 <BottomMenuTitle
+								route = {route}
+								navigation = {navigation}
+								pressSearch = {console.log('sd')}
+							/>
+				</BottomSheet>
+			</View>
+		  
+			
+	</View>  
+
+	
   )
 }
 

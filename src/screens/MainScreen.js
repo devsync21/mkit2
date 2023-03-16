@@ -96,15 +96,15 @@ const MainScreen = () => {
 			<ThemeContext.Provider value={{themeValue, tdispatch}}>
 				<ConfigContext.Provider value={{configValue, fdispatch}}>
 					<NavigationContainer>
-						{/* <View
+						<View
 						style={{
 			
 							paddingTop: insets.top,
-							backgroundColor:'red',
+							backgroundColor:themeValue.Title.TbackgroundColor,
 				
 						}}
 						
-						></View> */}
+						></View>
 
 						<Drawer.Navigator 
 						drawerContent={props => 
@@ -132,7 +132,7 @@ const MainScreen = () => {
 							})}
 
 						</Drawer.Navigator>
-						<View
+						{/* <View
 						style={{
 			
 							paddingTop: insets.bottom,
@@ -140,7 +140,7 @@ const MainScreen = () => {
 
 						}}
 						
-						></View>
+						></View> */}
 					
 						
 					</NavigationContainer>
