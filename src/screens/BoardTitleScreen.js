@@ -128,10 +128,10 @@ useEffect(() => {
     setcurrentPage(1)
 },[route])
 
-useEffect(() => {
-	console.log("?", bottomSheetRef)
-    bottomSheetRef.current.present()
-},[])
+// useEffect(() => {
+// 	console.log("?", bottomSheetRef)
+//     bottomSheetRef.current.present()
+// },[])
 
 
 
