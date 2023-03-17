@@ -22,7 +22,7 @@ const cheerio = require('cheerio')
 
 
 
-const DetailScreen = ({navigation,route}) => {
+const BoardDetailScreen = ({navigation,route}) => {
 
 
 const [noData, setNoData] = useState(false)
@@ -86,4 +86,4 @@ const goBack = () => {
 }
 
 
-export default DetailScreen
+export default BoardDetailScreen

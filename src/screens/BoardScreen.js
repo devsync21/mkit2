@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BoardTitleScreen from './BoardTitleScreen';
 import BoardDetailScreen from './BoardDetailScreen';
+import BoardSearchScreen from './BoardSearchScreen';
 import SettingScreen from './SettingScreen';
 import SettingThemeScreen from './SettingThemeScreen';
 
@@ -32,8 +33,16 @@ const BoardScreen = ({route,navigation}) => {
 
 		/>
 
+		<Stack.Screen
+			name="BoardSearchScreen"
+			component={BoardSearchScreen}       
+		
+			options={{ headerShown: false }}
 
-		<Stack.Screen name="DetailScreen" component={BoardDetailScreen} 
+		/>
+
+
+		<Stack.Screen name="BoardDetailScreen" component={BoardDetailScreen} 
 			 options={{ headerShown: false }}
 			/>  
 
