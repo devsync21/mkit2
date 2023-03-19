@@ -277,7 +277,7 @@ const BoardTitleScreen = ({ navigation, route }  ) => {
 	}
 	// console.log("route", route, sectioninfo)
 
-	// 메인 함수의 리턴.s
+	// 메인 함수의 리턴.
 	return (
 
 		<View style ={{
@@ -342,6 +342,7 @@ const BoardTitleScreen = ({ navigation, route }  ) => {
 					pressSearch = {pressSearch}
 					searchText = {searchText}
 					setSearchText = {setSearchText}
+					isSearching = {false}
 						/>
 			</View>
 

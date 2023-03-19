@@ -7,12 +7,15 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import ThemeContext from '../store/ThemeContext';
 import ConfigContext from '../store/ConfigContext';
+import { is } from 'cheerio/lib/api/traversing';
 
 
 
-const BottomMenuTitle = ({navigation, route, pressSearch,searchText,setSearchText,sectioninfo } ) => {
+const BottomMenuTitle = ({navigation, route, pressSearch,searchText,setSearchText,sectioninfo,isSearching } ) => {
     const {themeValue, tdispatch} = useContext(ThemeContext)
     const {configValue} = useContext(ConfigContext)
+
+    console.log("is searching?",isSearching)
 
 
     const goBack = () => {
@@ -136,15 +139,54 @@ const BottomMenuTitle = ({navigation, route, pressSearch,searchText,setSearchTex
                     </View>
                 </Animated.View>
             }   
+         
+           <View>
+           {
+            isSearching?
+          
+            <View
+             style={{
+                width: "100%",
+                // height: "98%",
+                flexDirection:'row',
+                backgroundColor: themeValue.Title.TbottomMenuBackgroundColor,
+             
+                alignItems:'center',
+                justifyContent: 'center'
 
+            }}
+            
+            >
+                <Text style={{
+                    color:themeValue.Title.TBottomMenufontColor,
+                    fontSize: 11
+                }}>
+                   검색어 : </Text>
+                <Text style={{
+                    color:themeValue.Title.TBottomMenufontColor
+                }}>
+                   {searchText}</Text>   
+
+                   <Text style={{
+                    color:'transparent',
+                    fontSize: 11
+                }}>
+                   검색어 : </Text>
+            </View> 
+            : 
+            <View></View>
+             }
             <View 
-                style={{
+                style={
+                   
+                    {
                     width: "100%",
-                    height: "100%",
+                    height : isSearching==true ? "97%": "100%",
                     backgroundColor: themeValue.Title.TbottomMenuBackgroundColor,
                     flexDirection:'row',
                     paddingHorizontal: 20,
-                    paddingVertical: 10,
+                    paddingTop: isSearching==true ? 0 : 10,
+                    paddingBottom: 10,
                     // alignItems:'center',
                     justifyContent: 'space-between'
 
@@ -169,6 +211,7 @@ const BottomMenuTitle = ({navigation, route, pressSearch,searchText,setSearchTex
                 <TouchableOpacity onPress={btnWriting}>
                     <MaterialIcons name="edit" size={24} style={{color: themeValue.Title.TBottomMenufontColor}} />
                 </TouchableOpacity>
+            </View>
             </View>
                  
         </View>

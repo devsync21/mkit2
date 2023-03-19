@@ -8,6 +8,9 @@ import instance from '../api/Api';
 
 import SectionInfo from '../components/SectionInfo';
 import BottomMenuTitle from '../components/BottomMenuTitle';
+import iconv from 'iconv-lite'
+// const iconv = require('iconv-lite')
+
 
 
 // import { useWindowDimensions } from 'react-native';
@@ -70,10 +73,21 @@ const isDrawerOpen = useDrawerStatus() === 'open';
 // 검색했을때 게시판 글 제목 가져오는 함수
 const getSearchTitleAxios = async (searchPage) =>{
 
-	console.log("axios working")
+	// console.log("axios working")
+
+    //한글을 euc-kr과 url endoing 하는 함수
+    const buffer = iconv.encode(searchText, 'EUC-KR');
+    const textEncoded = escape(buffer.toString('binary'));
+
+	
+
+
+
 	  try {
 	  let res = await instance.post('/get_board_search_title_lists/'+ section+'/'+ sectionid + '/' + searchPage,
-	  {text:searchText}
+	  {text : textEncoded,
+		originalText : searchText
+	 }
 	  )   
 	
 
@@ -171,6 +185,7 @@ const onEndReached = () => {
 
   // flatList 렌더링 하는 함수
   const renderItem = ({item}) => {
+    
    
     const repl = item.repl.replace('[','').replace(']','')
     
@@ -181,7 +196,7 @@ const onEndReached = () => {
       // onPress={this.itemClick(item)}
       onPress={() =>  
         {  
-          
+        
           if (isDrawerOpen) {
             
             navigation.toggleDrawer();
@@ -326,6 +341,7 @@ const onEndReached = () => {
 				navigation = {navigation}
 				pressSearch = {pressSearch}
 				searchText = {searchText}
+				isSearching = {true}
 				// setSearchText = {setSearchText}
 					/>
 		</View>
