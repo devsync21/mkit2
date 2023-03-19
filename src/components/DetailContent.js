@@ -121,7 +121,7 @@ const processHTML = (data) => {
 
 
 // 메인 펑션
-const DetailContent = ({route, noData,setNoData}) => {
+const DetailContent = ({route, noData, setNoData}) => {
 	// console.log('test',instance)
 
 	// 정상적이지 않은 게시판은 rule이 false로 됨. 예를 들면 속풀이
