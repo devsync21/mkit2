@@ -37,6 +37,14 @@ const goBack = () => {
 	
   }  
 
+useEffect(()=> {
+	// console.log("detail")
+	navigation.getParent().setOptions({ swipeEnabled: false })
+
+},[])
+
+
+
   return (
     <>
 		{noData == true ? 

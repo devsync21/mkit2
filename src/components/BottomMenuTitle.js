@@ -15,7 +15,7 @@ const BottomMenuTitle = ({navigation, route, pressSearch,searchText,setSearchTex
     const {themeValue, tdispatch} = useContext(ThemeContext)
     const {configValue} = useContext(ConfigContext)
 
-    console.log("is searching?",isSearching)
+    // console.log("is searching?",isSearching)
 
 
     const goBack = () => {
@@ -64,6 +64,7 @@ const BottomMenuTitle = ({navigation, route, pressSearch,searchText,setSearchTex
     
     const btnWriting = () => {
         console.log(' 글 작성하기')
+        navigation.navigate('BoardWriteScreen')
     }
   
 

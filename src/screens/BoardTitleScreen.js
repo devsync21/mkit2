@@ -94,6 +94,7 @@ const BoardTitleScreen = ({ navigation, route }  ) => {
 	},[route])
 
 
+
 	//만일 디테일 정보볼때 제스쳐하면 제목 목록으로, 제목볼때는 drawer menu
 	const toggleGesture = () => {
 		
@@ -104,10 +105,10 @@ const BoardTitleScreen = ({ navigation, route }  ) => {
 
 		// console.log("after changed ", navigation.getParent())
 
-		navigation.setOptions({
-			swipeEnabled:true,
-			gestureEnabled:true
-		})
+		// navigation.setOptions({
+		// 	swipeEnabled:true,
+		// 	gestureEnabled:true
+		// })
 
 		if (current != 0) {
 			parent.setOptions({ swipeEnabled: false })
@@ -123,16 +124,16 @@ const BoardTitleScreen = ({ navigation, route }  ) => {
 
 	}
 		//만일 디테일 정보볼때 제스쳐하면 제목 목록으로, 제목볼때는 drawer menu
-	// 	useEffect(() => {
-	//     const unsubscribe = navigation.addListener('transitionEnd', (e) => {
-	//       console.log("changed3",e)
-	//       toggleGesture()
-	//       // Do something
-	//     });
+		useEffect(() => {
+			const unsubscribe = navigation.addListener('focus', () => {
+				navigation.getParent().setOptions({ swipeEnabled: true })
+			});
 		
-	//     return unsubscribe;
-	//   }, [navigation]);
-
+			// Return the function to unsubscribe from the event so it gets removed on unmount
+			return unsubscribe;
+		}, [navigation]);
+	
+	
 
 	// 받아온 데이터 가공
 	const dataProcess = (resDatat) => {

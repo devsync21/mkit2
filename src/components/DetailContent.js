@@ -27,6 +27,7 @@ const cheerio = require('cheerio')
 
 const customHTMLElementModels = {
 	iframe: iframeModel,
+	
 
 	'font': HTMLElementModel.fromCustomModel({
 		tagName: 'font',
@@ -269,8 +270,42 @@ const DetailContent = ({route, noData, setNoData}) => {
 		lineHeight: configValue.ClineHeight,
 		fontSize: configValue.CfontSize,
 
-		color : themeValue.Content.CfontColor
+		color : themeValue.Content.CfontColor,
+		backgroundColor: themeValue.Reply.RbackgroundColor
+
+	
 	 
+	},
+	b: {
+		whiteSpace: 'normal',
+		lineHeight: configValue.ClineHeight,
+		fontSize: configValue.CfontSize,
+
+		color : themeValue.Content.CfontColor,
+		backgroundColor: themeValue.Reply.RbackgroundColor
+
+	
+	 
+	},
+	font: {
+		whiteSpace: 'normal',
+		lineHeight: configValue.ClineHeight,
+		fontSize: configValue.CfontSize,
+
+		color : themeValue.Content.CfontColor,
+		backgroundColor: themeValue.Reply.RbackgroundColor
+
+	
+	 
+	},
+	span: {
+		whiteSpace: 'normal',
+		lineHeight: configValue.ClineHeight,
+		fontSize: configValue.CfontSize,
+
+		color : themeValue.Content.CfontColor,
+		
+		backgroundColor: themeValue.Reply.RbackgroundColor
 	},
 	
   };
