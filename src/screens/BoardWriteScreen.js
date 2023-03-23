@@ -106,7 +106,7 @@ const BoardWriteScreen = ({route,navigation}) => {
 
 
         }}
-        onChangeText={(text) => setTitle({text})}
+        onChangeText={(text) => setTitle(text)}
         value={title}
         placeholder=' 제목을 입력하세요.'
         />
@@ -130,7 +130,7 @@ const BoardWriteScreen = ({route,navigation}) => {
 
         multiline={true}
 
-        onChangeText={(text) => setContent({text})}
+        onChangeText={(text) => setContent(text)}
         value={content}
         placeholder=' 내용을 입력하세요.'
         

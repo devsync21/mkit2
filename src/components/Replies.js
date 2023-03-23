@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState,useEffect, useContext } from 'react'
+import { useState,useEffect, useContext,useRef } from 'react'
 
 import { StyleSheet, Text, View, Button, FlatList,SafeAreaView, TouchableOpacity, TouchableWithoutFeedback  } from 'react-native';
 // import axios from "axios";
@@ -18,8 +18,11 @@ const Replies =  ({route}) => {
 
   const [detailReply, setDetailReply] = useState([])
   // 답글달기 버튼 누르면 나오는 내용 정하기
-  const [commentSelected, setCommentSelected] =useState(0)
+  const [commentSelected, setCommentSelected] = useState(0)
+
   const [replContent,setReplContent] = useState('')
+  const textRef = useRef('')
+
   const info = route.params  
 
   // const baseUrl = 'http://localhost:3000';
@@ -31,6 +34,7 @@ const Replies =  ({route}) => {
    
 
   const getDetailReplyAxios = async () => {
+
 
     let replink1 = info.data1.link
     let replink2 = replink1.split("&")
@@ -120,13 +124,24 @@ const Replies =  ({route}) => {
       )
 
   }  
+//   http://m.missyusa.com/mainpage/boards/board_reply_list.asp?id=talk1&idx=6582484&ref=3415258&step=1
+  
 
-  const ReplyEditor = () =>{
+const ReplyEditor = (item) =>{
 
-	const onChangeReplContent =(txt) => {
-		
-		console.log(txt)
+	console.log("::::::::::::::",item)
+
+
+	const textToRef = (replContent) =>{
+
+		console.log(textRef.current, replContent)
+		textRef.current = textRef.current + replContent
+	  }
+	const sendReply = () =>{
+		// console.log( textRef.text )
+		setReplContent(textRef.text)
 	}
+
 	return (
 		<View style = {{
 			borderWidth:1,
@@ -136,22 +151,29 @@ const Replies =  ({route}) => {
 			backgroundColor: 'skyblue'
 		}}>
 			<Text>haha</Text>
+			<View>
 			<TextInput
-				multiline={true}
+					style ={{
+						width :'100%',
+						height: 80,
+						borderWidth:1,
+						borderColor:'green',
+						borderRadius:5,
+						backgroundColor: 'lightyellow'
+					}}
 
-				onChangeText={(text) => onChangeReplContent(text)}
-				value={replContent}
+				multiline={true}
+				ref={textRef}
+
+				// onChangeText={textToRef}
+				onChangeText={text => textRef.text = text}
+
+				// value={replContent}
 				placeholder=' 댓글을 입력하세요.'
 
-				style ={{
-					width :'100%',
-					height: 80,
-					borderWidth:1,
-					borderColor:'green',
-					borderRadius:5,
-					backgroundColor: 'lightyellow'
-				}}
+			
 			/>
+			</View>
 			<View style={{flexDirection:'row', 
 				justifyContent:'flex-end',
 				marginTop:3
@@ -168,7 +190,7 @@ const Replies =  ({route}) => {
 						<Text> 취소</Text>
 					</View>
 				</TouchableOpacity>
-				<TouchableOpacity>
+				<TouchableOpacity onPress={sendReply}>
 					<View style={{
 						backgroundColor:'lightgreen',
 						paddingVertical:5,
@@ -186,6 +208,7 @@ const Replies =  ({route}) => {
   }
 
   const BackOfSwipe = (item) => {
+	
 	const onPressReply = () => {
 		// console.log(item.item.rep_no)
 		setCommentSelected(item.item.rep_no)
@@ -243,6 +266,8 @@ const Replies =  ({route}) => {
   }
 
   const ReplyItem = (item) =>{
+
+
   
      
         return (
@@ -251,6 +276,7 @@ const Replies =  ({route}) => {
 					borderTopWidth : 1,
 					// paddingRight: 15,
 					borderTopColor: themeValue.Reply.RborderColor}}>
+			
 				
 					{ item.item.rep_rep_icon === 0 ?   
 
@@ -297,7 +323,7 @@ const Replies =  ({route}) => {
 											</View>
 											{ item.item.rep_no == commentSelected ?
 											<View style={{backgroundColor:  themeValue.Reply.RbackgroundColor}}>
-												<ReplyEditor/>
+												<ReplyEditor item={item.item}/>
 											</View>
 											: <View></View>
   											}
@@ -338,6 +364,7 @@ const Replies =  ({route}) => {
 
 
 			{ detailReply && detailReply.length > 0 ? detailReply.map((item, id) => {
+				
 			
 				return (<ReplyItem item={item} key={id}/>)
 			}) : ""}
