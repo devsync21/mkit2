@@ -9,7 +9,7 @@ import IframeRenderer, { iframeModel } from '@native-html/iframe-plugin';
 import { useWindowDimensions } from 'react-native';
 import RenderHtml, { HTMLElementModel, HTMLContentModel }  from 'react-native-render-html';
 
-import GetAuth from './GetAuth';
+import {GetAuth,storeData} from './GetAuth';
 import AuthContext from '../store/AuthContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -28,6 +28,7 @@ const cheerio = require('cheerio')
 const customHTMLElementModels = {
 	iframe: iframeModel,
 	
+
 
 	'font': HTMLElementModel.fromCustomModel({
 		tagName: 'font',
@@ -52,6 +53,8 @@ const customHTMLElementModels = {
 		contentModel: HTMLContentModel.block
 	})
 };
+
+const ignoredDomTags = ['o:p']
 
 const renderersProps = {
 	img: {
@@ -157,20 +160,20 @@ const DetailContent = ({route, noData, setNoData}) => {
 
 	const fontSize = 15 // 나중에 세팅에서 바꿀수 있게
 
-	const storeData = async (cookie) => {
-		const value = {
-			userid : authValue.userid,
-			passwd : authValue.passwd,
-			cookie : cookie
-		}
+	// const storeData = async (cookie) => {
+	// 	const value = {
+	// 		userid : authValue.userid,
+	// 		passwd : authValue.passwd,
+	// 		cookie : cookie
+	// 	}
 
-		try {
-		  const jsonValue = JSON.stringify(value)
-		  await AsyncStorage.setItem('@storage_Key', jsonValue)
-		} catch (e) {
-		  // saving error
-		}
-	  }
+	// 	try {
+	// 	  const jsonValue = JSON.stringify(value)
+	// 	  await AsyncStorage.setItem('@storage_Key', jsonValue)
+	// 	} catch (e) {
+	// 	  // saving error
+	// 	}
+	//   }
 
   	const getDetailAxios = async () =>{
 
@@ -332,6 +335,7 @@ const DetailContent = ({route, noData, setNoData}) => {
 
 			renderers={renderers}
 			tagsStyles={tagsStyles}
+			ignoredDomTags={ignoredDomTags}
 			
 			// computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
 			// provideEmbeddedHeaders={provideEmbeddedHeaders}

@@ -23,6 +23,9 @@ const Replies =  ({route}) => {
   const [replContent,setReplContent] = useState('')
   const textRef = useRef('')
 
+  // 22222 눌렀을때는 기본값ㅇ 22222로...
+  const [text222, setText222] = useState(false)
+
   const info = route.params  
 
   // const baseUrl = 'http://localhost:3000';
@@ -32,37 +35,74 @@ const Replies =  ({route}) => {
 	const {configValue} = useContext(ConfigContext)
 
    
-
-  const getDetailReplyAxios = async () => {
-
-
-    let replink1 = info.data1.link
-    let replink2 = replink1.split("&")
+	// 시작했을때 댓글들 가져오는 함수
+	const getDetailReplyAxios = async () => {
 
 
-    const newlink = 'http://m.missyusa.com/mainpage/boards/board_reply_list.asp?id='
-                      + info.data2.sectionid + '&'+ replink2[6] + '&' + replink2[7] + '&step=1'
+		let replink1 = info.data1.link
+		let replink2 = replink1.split("&")
 
 
-    const url = "/get_board_detail_replies"
+		const newlink = 'http://m.missyusa.com/mainpage/boards/board_reply_list.asp?id='
+						+ info.data2.sectionid + '&'+ replink2[6] + '&' + replink2[7] + '&step=1'
 
-    try {
-      
-      let res = await instance.post(url,
-          data={
-            link : newlink
-          }
-          )   
-          setDetailReply(res.data)    
-      
-  
-    } catch(e){
-     
-      console.log(e)
-  
-    }
- 
-    }
+
+		const url = "/get_board_detail_replies"
+
+		try {
+		
+		let res = await instance.post(url,
+			data={
+				link : newlink
+			}
+			)   
+			setDetailReply(res.data)    
+			
+		
+	
+		} catch(e){
+		
+		console.log(e)
+	
+		}
+	
+		}
+	
+	// 댓글을 다는 함수
+	const sendReplyAxios = async (txt,item) => {
+		
+
+		const data = {
+			txt:txt,
+			id: item.item.id,
+            idx: item.item.idx,
+            ref: item.item.ref,
+            step: item.item.step,
+            oindex: item.item.oindex,
+            ostep: item.item.ostep,
+            fl: item.item.fl,
+			url: item.item.url,
+			id_num : item.item.id_num
+		}
+
+		
+
+		const url = "/send_reply"
+
+		try {
+		
+			let res = await instance.post(url, data)   
+			 
+			
+		
+			} catch(e){
+			
+			console.log(e)
+		
+			}
+
+	}
+
 
     useEffect(() => {
         getDetailReplyAxios()
@@ -129,17 +169,30 @@ const Replies =  ({route}) => {
 
 const ReplyEditor = (item) =>{
 
-	console.log("::::::::::::::",item)
+	// console.log("::::::::::::::", item.item.id)
+	// console.log(item)
+	// console.log()
+	// console.log(route)
 
 
-	const textToRef = (replContent) =>{
 
-		console.log(textRef.current, replContent)
-		textRef.current = textRef.current + replContent
-	  }
+	
+	const cancelReply = () => {
+		setReplContent('')
+		textRef.text=''
+		setCommentSelected(0)
+		setText222(false)
+
+	}
+
+	// 답글하기 버튼을 눌렀을때...
+
 	const sendReply = () =>{
 		// console.log( textRef.text )
 		setReplContent(textRef.text)
+		sendReplyAxios (replContent,item)
+		// console.log("PPPP",item)
+		
 	}
 
 	return (
@@ -167,8 +220,9 @@ const ReplyEditor = (item) =>{
 
 				// onChangeText={textToRef}
 				onChangeText={text => textRef.text = text}
+				defaultValue={ text222== false ? '' : '22222'}
 
-				// value={replContent}
+				
 				placeholder=' 댓글을 입력하세요.'
 
 			
@@ -178,7 +232,7 @@ const ReplyEditor = (item) =>{
 				justifyContent:'flex-end',
 				marginTop:3
 				}}>
-				<TouchableOpacity>
+				<TouchableOpacity onPress={cancelReply}>
 					<View style={{
 						backgroundColor:'orange',
 						paddingVertical:5,
@@ -214,6 +268,13 @@ const ReplyEditor = (item) =>{
 		setCommentSelected(item.item.rep_no)
 	} 
 
+	const onPress222 = () => {
+		setCommentSelected(item.item.rep_no)
+		setText222(true)
+		
+
+	}
+
 	return(
 		<View style ={{
 			flexDirection:'row', 
@@ -224,7 +285,7 @@ const ReplyEditor = (item) =>{
 			// padding: 15,
 			}}>
             
-            <TouchableWithoutFeedback >
+            <TouchableWithoutFeedback onPress={onPress222} >
 
 				<View  style ={{
 					flexDirection:'row', 
