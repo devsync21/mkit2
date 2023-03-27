@@ -12,7 +12,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const GetAuth = async (Value) => {
-    const {authValue, setAuthValue} = useContext(AuthContext)
+    // console.log('testing')
+
+    // const {authValue, setAuthValue} = useContext(AuthContext)
     // const baseUrl = 'http://localhost:3000';
 
     const authdata = {
@@ -20,12 +22,16 @@ const GetAuth = async (Value) => {
         passwd : Value.passwd
      }
 
+     // 링크도 같이 보내야 하나???/
+
  
     try {
    
 
          let Authcheck = await instance.post('/get_auth_info', authdata)
          const AuthCookieNumber = Authcheck.data['set-cookie'].length
+
+         console.log('in get auth', Authcheck.data['set-cookie'])
 
         if (AuthCookieNumber == 4){
  
@@ -46,11 +52,13 @@ const GetAuth = async (Value) => {
 
 }
 
-const storeData = async (cookie) => {
-    console.log('storeData')
+const storeData = async (cookie,auth) => {
+    console.log('storeData',cookie)
+    // const {authValue, setAuthValue} = useContext(AuthContext)
+
     const value = {
-        userid : authValue.userid,
-        passwd : authValue.passwd,
+        userid : auth.userid,
+        passwd : auth.passwd,
         cookie : cookie
     }
 

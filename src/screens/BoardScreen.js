@@ -12,6 +12,7 @@ import BoardSearchScreen from './BoardSearchScreen';
 import SettingScreen from './SettingScreen';
 import SettingThemeScreen from './SettingThemeScreen';
 import BoardWriteScreen from './BoardWriteScreen';
+import WebScreen from './WebScreen';
 
 const Stack = createStackNavigator();
 
@@ -74,6 +75,10 @@ const BoardScreen = ({route,navigation}) => {
 		/>    
     
 		<Stack.Screen name="SettingThemeScreen" component={SettingThemeScreen} 
+		
+		/>    
+
+		<Stack.Screen name="WebScreen" component={WebScreen} 
 		
 		/>    
      

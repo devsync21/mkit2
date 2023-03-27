@@ -8,9 +8,10 @@ import DetailContent from '../components/DetailContent';
 import ThemeContext from '../store/ThemeContext';
 import ConfigContext from '../store/ConfigContext';
 
-import { MaterialIcons } from '@expo/vector-icons'; 
-import { FontAwesome } from '@expo/vector-icons'; 
+// import { MaterialIcons } from '@expo/vector-icons'; 
+// import { FontAwesome } from '@expo/vector-icons'; 
 import { useWindowDimensions } from 'react-native';
+import BottomMenuDetail from '../components/BottomMenuDetail';
 
 
 
@@ -62,7 +63,7 @@ useEffect(()=> {
 					<Replies route = {route}/>
 				</ScrollView> 
 					{/* 하단에 메뉴 */}
-				  	<View style = {{  
+				  	{/* <View style = {{  
 					
 						width: "100%",
 						backgroundColor: themeValue.Title.TbottomMenuBackgroundColor,
@@ -82,10 +83,16 @@ useEffect(()=> {
 						<MaterialIcons name="refresh" size={24} style={{color: themeValue.Title.TBottomMenufontColor}} />
 						<MaterialIcons name="comment" size={24} style={{color: themeValue.Title.TBottomMenufontColor}} />
 						<FontAwesome name="heart-o" size={24} style={{color: themeValue.Title.TBottomMenufontColor}} />
+						<TouchableOpacity onPress={navigation.navigate('WebScreeen')}>
 						<MaterialIcons name="save-alt" size={24} style={{color: themeValue.Title.TBottomMenufontColor}} />
-	
+						</TouchableOpacity>
 		  
-					</View>
+					</View> */}
+					<BottomMenuDetail
+					navigation = {navigation}
+
+					
+					/>
 			</View>
 		}
 

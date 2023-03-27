@@ -186,7 +186,7 @@ const DetailContent = ({route, noData, setNoData}) => {
 				const finalHTML = processHTML (res.data)    
 
 				setDetail(finalHTML)
-				// console.log("1번째 시도")
+				console.log("1번째 시도")
 				return
 			} else {
 				// 이것은 무언가 문제가 있다는 뜻
@@ -194,19 +194,19 @@ const DetailContent = ({route, noData, setNoData}) => {
 				// 아이디도 없다면 방법이 없이 로그인 필요하다고 말하기
 				if (authValue.userid.length = 0){
 					setNoData(true)
-					// console.log("2번째 시도")
+					console.log("2번째 시도")
 
 				} else {   //아이디 있다면 쿠키 새로 받는거 실시
 					const cookie = await GetAuth(authValue)
 
 						if (cookie == 0 ) {
 							setNoData(true)
-							// console.log("3번째 시도",authValue)
+							console.log("3번째 시도",authValue)
 
 
 						} else {
 							//다시한번 시도
-							// console.log("4번째 시도",cookie)
+							console.log("4번째 시도",cookie)
 							await setAuthValue(prevState => ({...prevState,
 								
 									cookie : cookie
@@ -231,16 +231,16 @@ const DetailContent = ({route, noData, setNoData}) => {
 
 								// setItem 이용해서 쿠키를 로컬 스토리지에 저장하기
 
-								storeData(cookie)
+								storeData(cookie,authValue)
 
 
 					
 								setDetail(finalHTML)
-								// console.log("5번째 시도")
+								console.log("5번째 시도")
 								return
 							} else {
 								setNoData(true)
-								// console.log("6번째 시도")
+								console.log("6번째 시도")
 
 							}
 
